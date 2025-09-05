@@ -27,10 +27,11 @@
   /* Hero shimmer card */
   .shimmer{background:linear-gradient(110deg, rgba(255,255,255,.08) 8%, rgba(255,255,255,.18) 18%, rgba(255,255,255,.08) 33%);background-size:200% 100%;animation:shimmer 2.2s linear infinite}
   @keyframes shimmer{to{background-position-x:-200%}}
-  /* Background overlay - ЕЩЁ БОЛЬШЕ УЛУЧШЕНО */
+  /* Background overlay - ИСПРАВЛЕННЫЕ Z-INDEX */
   #vanta{
     opacity: .95;
     filter: saturate(1.2) brightness(1.1) contrast(.98);
+    z-index: -20; /* Фон должен быть самым нижним */
   }
   .bg-overlay{
     background:
@@ -38,6 +39,7 @@
       radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.05), transparent 75%),
       linear-gradient(180deg, rgba(5,8,15,.15), rgba(5,8,15,.35));
     opacity: 0.9;
+    z-index: -10; /* Overlay должен быть над фоном, но под контентом */
   }
   /* Nav blur */
   .nav-blur{backdrop-filter: blur(10px); background: rgba(5,8,15,.45); border-bottom:1px solid rgba(255,255,255,.08)}
@@ -50,9 +52,9 @@
 </style>
 </head>
 <body>
-  <!-- Animated background - ИСПРАВЛЕНО (убраны лишние </div>) -->
-  <div id="vanta" class="fixed inset-0 -z-10 pointer-events-none"></div>
-  <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none"></div>
+  <!-- Animated background - ИСПРАВЛЕННЫЕ Z-INDEX -->
+  <div id="vanta" class="fixed inset-0 pointer-events-none"></div>
+  <div class="bg-overlay fixed inset-0 pointer-events-none"></div>
   
   <script>
     window.addEventListener('load',()=>{ 
@@ -60,9 +62,9 @@
             el: '#vanta', 
             color: 0x33e7ff,
             backgroundColor: 0x0b0e14,
-            points: 12.0, // Увеличил количество точек
-            maxDistance: 20.0, // Уменьшил максимальное расстояние
-            spacing: 14.0, // Уменьшил расстояние между точками
+            points: 12.0,
+            maxDistance: 20.0,
+            spacing: 14.0,
             showDots: true,
             mouseControls: true,
             touchControls: true,
@@ -73,6 +75,7 @@
     })
   </script>
 
+  <!-- Остальной код без изменений -->
   <!-- Navbar -->
   <header class="sticky top-0 z-50 nav-blur">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
