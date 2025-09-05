@@ -28,11 +28,11 @@
     .shimmer{background:linear-gradient(110deg, rgba(255,255,255,.08) 8%, rgba(255,255,255,.18) 18%, rgba(255,255,255,.08) 33%);background-size:200% 100%;animation:shimmer 2.2s linear infinite}
     @keyframes shimmer{to{background-position-x:-200%}}
     /* Background overlay */
-    #vanta{opacity:.5;filter:saturate(.7) brightness(.9) contrast(.92)}
+    #vanta{opacity:.72;filter:saturate(1) brightness(1) contrast(.98)}
     .bg-overlay{background:
-      radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.45), transparent 60%),
-      radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.35), transparent 60%),
-      linear-gradient(180deg, rgba(5,8,15,.65), rgba(5,8,15,.9))}
+      radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.30), transparent 62%),
+      radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.22), transparent 62%),
+      linear-gradient(180deg, rgba(5,8,15,.40), rgba(5,8,15,.65))}
     /* Nav blur */
     .nav-blur{backdrop-filter: blur(10px); background: rgba(5,8,15,.45); border-bottom:1px solid rgba(255,255,255,.08)}
   </style>
@@ -42,7 +42,7 @@
   <div id="vanta" class="fixed inset-0 -z-10"></div>
   <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none"></div>
   <script>
-    window.addEventListener('load',()=>{ VANTA.NET({ el:'#vanta', color:0x12c8d6, backgroundColor:0x0b0e14, points:5.5, maxDistance:19.0, spacing:24.0, showDots:true, mouseControls:true, touchControls:true, gyroControls:false, scale:1.0, scaleMobile:1.0, minHeight:200.00, minWidth:200.00 }) })
+    window.addEventListener('load',()=>{ VANTA.NET({ el:'#vanta', color:0x33e7ff, backgroundColor:0x0b0e14, points:8.0, maxDistance:22.0, spacing:18.0, showDots:true, mouseControls:true, touchControls:true, gyroControls:false, scale:1.0, scaleMobile:1.0 }) })
   </script>
 
   <!-- Navbar -->
