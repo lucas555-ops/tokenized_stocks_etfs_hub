@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Tokenized Stocks & ETFs Hub — Crypto Onboarding-as-a-Service</title>
+  <meta name="description" content="Купи токенизированные акции и ETF через криптовалюту. Онбординг, портфель, сопровождение. Без брокеров — только кошелёк и USDT."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Effects libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+  <style>
+    :root{ --bg:#0b0e14; --muted:#9aa5b1; --accent:#6ee7b7; --accent-2:#22d3ee; }
+    html, body { background: var(--bg); color: #e5e7eb; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    /* Cards & buttons */
+    .glass { background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); }
+    .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,0.06); }
+    .btn-primary { position:relative; overflow:hidden; background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#041016; font-weight: 800; }
+    .btn-primary::after{ content:''; position:absolute; inset:auto -20% 0; height:120%; transform:translateX(-120%) rotate(8deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent); transition:transform .7s ease; }
+    .btn-primary:hover::after{ transform:translateX(120%) rotate(8deg); }
+    .chip { border:1px solid rgba(255,255,255,0.12); }
+    /* Hero shimmer card */
+    .shimmer{background:linear-gradient(110deg, rgba(255,255,255,.08) 8%, rgba(255,255,255,.18) 18%, rgba(255,255,255,.08) 33%);background-size:200% 100%;animation:shimmer 2.2s linear infinite}
+    @keyframes shimmer{to{background-position-x:-200%}}
+    /* Background overlay */
+    #vanta{opacity:.6;filter:saturate(.75) brightness(.9) contrast(.95)}
+    .bg-overlay{background:
+      radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.45), transparent 60%),
+      radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.35), transparent 60%),
+      linear-gradient(180deg, rgba(5,8,15,.65), rgba(5,8,15,.9))}
+    /* Nav blur */
+    .nav-blur{backdrop-filter: blur(10px); background: rgba(5,8,15,.45); border-bottom:1px solid rgba(255,255,255,.08)}
+  </style>
+</head>
+<body>
+  <!-- Animated background -->
+  <div id="vanta" class="fixed inset-0 -z-10"></div>
+  <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none"></div>
+  <script>
+    window.addEventListener('load',()=>{ VANTA.NET({ el:'#vanta', color:0x18a4b9, backgroundColor:0x0b0e14, points:7.0, maxDistance:18.0, spacing:20.0, showDots:true }) })
+  </script>
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50 nav-blur">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="#" class="flex items-center gap-2 font-extrabold tracking-tight text-white">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 12a8 8 0 1016 0 8 8 0 10-16 0z" stroke="url(#g)" stroke-width="2"/>
+            <path d="M8 12h8M12 8v8" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round"/>
+            <defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6ee7b7"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+          </svg>
+          <span>Tokenized Hub</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-6 text-sm text-gray-300">
+          <a href="#how" class="hover:text-white">Как это работает</a>
+          <a href="#portfolio" class="hover:text-white">Портфель</a>
+          <a href="#pricing" class="hover:text-white">Тарифы</a>
+          <a href="#faq" class="hover:text-white">FAQ</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href="#start" class="btn-primary rounded-xl px-4 py-2 shadow-soft">Начать</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <div class="grid md:grid-cols-2 items-center gap-10">
+        <div>
+          <div class="inline-flex items-center gap-2 chip rounded-full px-3 py-1 text-xs text-gray-300 mb-4">
+            <span class="h-2 w-2 rounded-full bg-emerald-400"></span> Без брокеров • Только кошелёк и USDT
+          </div>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">Tokenized Wall Street <span class="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">for Everyone</span></h1>
+          <p class="mt-6 text-lg text-gray-300 max-w-xl">Купи токенизированные акции и ETF через криптовалюту. Мы проведём за руку: P2P → кошелёк → готовый портфель Apple, Tesla, S&P500, Nasdaq.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#start" class="btn-primary rounded-xl px-6 py-3 shadow-soft">Начать сейчас</a>
+            <a href="#how" class="rounded-xl px-6 py-3 border border-white/20 hover:border-white/40">Узнать больше</a>
+          </div>
+          <div class="mt-6 flex items-center gap-4 text-sm text-gray-400">
+            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 bg-emerald-400 rounded-full"></span> Вход от $100</div>
+            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 bg-cyan-400 rounded-full"></span> Доставка за 24 часа</div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="relative glass rounded-3xl p-6 shadow-soft">
+            <div class="p-6 rounded-2xl shimmer"></div>
+            <div class="absolute -inset-1 rounded-3xl pointer-events-none" style="box-shadow:0 0 120px rgba(34,211,238,.25);"></div>
+            <div class="grid grid-cols-2 gap-4 text-sm mt-6">
+              <div class="glass rounded-2xl p-4">
+                <div class="text-gray-400">AAPL</div>
+                <div class="text-2xl font-extrabold">Apple</div>
+                <div class="mt-2 text-emerald-300">+1.24%</div>
+              </div>
+              <div class="glass rounded-2xl p-4">
+                <div class="text-gray-400">TSLA</div>
+                <div class="text-2xl font-extrabold">Tesla</div>
+                <div class="mt-2 text-emerald-300">+2.87%</div>
+              </div>
+              <div class="glass rounded-2xl p-4">
+                <div class="text-gray-400">SPY</div>
+                <div class="text-2xl font-extrabold">S&P 500</div>
+                <div class="mt-2 text-emerald-300">+0.91%</div>
+              </div>
+              <div class="glass rounded-2xl p-4">
+                <div class="text-gray-400">QQQ</div>
+                <div class="text-2xl font-extrabold">Nasdaq 100</div>
+                <div class="mt-2 text-emerald-300">+1.58%</div>
+              </div>
+            </div>
+            <p class="mt-4 text-xs text-gray-400">*Данные — пример. Не инвестиционный совет. Токенизированные активы могут не иметь прав на дивиденды/голосование.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="py-16 md:py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Как это работает</h2>
+        <p class="mt-3 text-gray-400">Три шага — и у тебя портфель токенизированных акций и ETF.</p>
+      </div>
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <div class="text-sm text-gray-400">Шаг 1</div>
+          <h3 class="mt-1 text-xl font-bold">P2P: покупка USDT</h3>
+          <p class="mt-2 text-gray-300">Помогаем купить USDT с карты/наличных через Binance/Bybit/OKX P2P.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <div class="text-sm text-gray-400">Шаг 2</div>
+          <h3 class="mt-1 text-xl font-bold">Кошелёк</h3>
+          <p class="mt-2 text-gray-300">Настраиваем Phantom/MetaMask. Ключи и активы — под твоим контролем.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <div class="text-sm text-gray-400">Шаг 3</div>
+          <h3 class="mt-1 text-xl font-bold">Tokenized Stocks & ETFs</h3>
+          <p class="mt-2 text-gray-300">Подключаем платформу и собираем стартовый портфель (AAPL, TSLA, SPY, QQQ).</p>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="#start" class="btn-primary rounded-xl px-6 py-3 shadow-soft">Начать с $100</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="portfolio" class="py-16 md:py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 items-start gap-10">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-extrabold">Main Portfolio</h2>
+          <p class="mt-3 text-gray-300">Готовый диверсифицированный набор активов для старта. Можно начать с $100 и постепенно наращивать позиции.</p>
+          <ul class="mt-6 space-y-3 text-gray-200">
+            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 🍏 Apple (AAPL)</li>
+            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 🚗 Tesla (TSLA)</li>
+            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 📈 S&P 500 (SPY)</li>
+            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 💻 Nasdaq 100 (QQQ)</li>
+          </ul>
+          <p class="mt-6 text-sm text-gray-400">*Состав и веса портфеля могут отличаться в зависимости от доступности токенизированных активов у провайдеров.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <h3 class="text-xl font-bold">Твой путь к владению активами</h3>
+          <ol class="mt-4 space-y-3 text-gray-300 list-decimal list-inside">
+            <li>Определяем сумму старта (от $100).</li>
+            <li>Покупаем USDT через P2P.</li>
+            <li>Создаём и настраиваем кошелёк.</li>
+            <li>Подключаемся к платформе токенизированных активов.</li>
+            <li>Собираем и ребалансируем портфель.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="py-16 md:py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Наши услуги</h2>
+        <p class="mt-3 text-gray-400">Зарабатываем сервисной моделью: онбординг, сопровождение, транзакции.</p>
+      </div>
+      <div class="mt-10 grid md:grid-cols-4 gap-6">
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <h3 class="text-lg font-bold">Onboarding</h3>
+          <p class="mt-2 text-gray-300">P2P, кошелёк, первая покупка. <span class="text-emerald-300">$50–100</span></p>
+        </div>
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <h3 class="text-lg font-bold">Portfolio Setup</h3>
+          <p class="mt-2 text-gray-300">Сборка Main Portfolio. <span class="text-emerald-300">2–3%</span></p>
+        </div>
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <h3 class="text-lg font-bold">Rebalancing</h3>
+          <p class="mt-2 text-gray-300">Пополнения/обмены. <span class="text-emerald-300">1–2%</span></p>
+        </div>
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <h3 class="text-lg font-bold">Premium</h3>
+          <p class="mt-2 text-gray-300">Персонально + чат. <span class="text-emerald-300">$50/мес</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="py-16 md:py-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Тарифы</h2>
+        <p class="mt-3 text-gray-400">Выбери уровень — мы сделаем остальное.</p>
+      </div>
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <div class="text-sm text-gray-400">Starter</div>
+          <div class="mt-1 text-3xl font-extrabold">$100+</div>
+          <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+            <li>Онбординг и первый портфель</li>
+            <li>Руководство по безопасности</li>
+            <li>Комиссия сервиса: 10%</li>
+          </ul>
+          <a href="#start" class="mt-6 inline-block btn-primary rounded-xl px-4 py-2">Выбрать</a>
+        </div>
+        <div class="glass rounded-2xl p-6 border-emerald-400/40 ring-2 ring-emerald-400/30">
+          <div class="text-sm text-gray-400">Standard</div>
+          <div class="mt-1 text-3xl font-extrabold">$500+</div>
+          <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+            <li>Apple + Tesla + ETF</li>
+            <li>Поддержка 30 дней</li>
+            <li>Комиссия сервиса: 5%</li>
+          </ul>
+          <a href="#start" class="mt-6 inline-block btn-primary rounded-xl px-4 py-2">Выбрать</a>
+        </div>
+        <div class="glass rounded-2xl p-6 border border-white/10">
+          <div class="text-sm text-gray-400">Premium</div>
+          <div class="mt-1 text-3xl font-extrabold">$1000+</div>
+          <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+            <li>Индивидуальная стратегия</li>
+            <li>Ребалансировка</li>
+            <li>Закрытый чат</li>
+          </ul>
+          <a href="#start" class="mt-6 inline-block btn-primary rounded-xl px-4 py-2">Выбрать</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Start form -->
+  <section id="start" class="py-16 md:py-24">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-white/10">
+        <h2 class="text-2xl md:text-3xl font-extrabold">Начать</h2>
+        <p class="mt-2 text-gray-300">Оставь контакт — мы свяжемся, проведём онбординг и соберём первый портфель.</p>
+        <form id="leadForm" class="mt-6 grid gap-4">
+          <div>
+            <label class="block text-sm text-gray-400">Имя</label>
+            <input required name="name" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400" placeholder="Иван" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400">Контакт (Telegram или Email)</label>
+            <input required name="contact" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400" placeholder="@username или email" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400">Сумма старта (USD)</label>
+            <input required name="amount" type="number" min="100" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400" placeholder="100" />
+          </div>
+          <button class="btn-primary rounded-xl px-6 py-3 w-full md:w-auto" type="submit">Отправить заявку</button>
+          <p id="leadStatus" class="text-sm text-gray-400"></p>
+        </form>
+        <p class="mt-4 text-xs text-gray-500">Нажимая «Отправить заявку», ты соглашаешься с тем, что это не инвестиционный совет. Мы оказываем технические и сервисные услуги по онбордингу и сопровождению.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-16 md:py-24">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center">FAQ</h2>
+      <div class="mt-10 space-y-4">
+        <details class="glass rounded-xl p-5 border border-white/10">
+          <summary class="cursor-pointer font-semibold">Можно ли купить с карты?</summary>
+          <p class="mt-3 text-gray-300">Да, через P2P (Binance, Bybit, OKX). Мы помогаем пройти процесс безопасно.</p>
+        </details>
+        <details class="glass rounded-xl p-5 border border-white/10">
+          <summary class="cursor-pointer font-semibold">Где хранятся мои активы?</summary>
+          <p class="mt-3 text-gray-300">В твоём кошельке (Phantom/MetaMask). Ключи контролируешь ты. Мы доступа не имеем.</p>
+        </details>
+        <details class="glass rounded-xl p-5 border border-white/10">
+          <summary class="cursor-pointer font-semibold">Какая комиссия сервиса?</summary>
+          <p class="mt-3 text-gray-300">Onboarding $50–100, Portfolio 2–3%, транзакции 1–2%, премиум $50/мес.</p>
+        </details>
+        <details class="glass rounded-xl p-5 border border-white/10">
+          <summary class="cursor-pointer font-semibold">Сколько занимает процесс?</summary>
+          <p class="mt-3 text-gray-300">Обычно 12–24 часа с момента заявки и подтверждения деталей.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-10 border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-sm text-gray-400">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p>© <span id="year"></span> Tokenized Hub. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-white">Условия сервиса</a>
+          <a href="#" class="hover:text-white">Политика конфиденциальности</a>
+          <a href="#" class="hover:text-white">Отказ от ответственности</a>
+        </div>
+      </div>
+      <p class="mt-4 text-xs text-gray-500">Отказ от ответственности: материалы на сайте не являются инвестиционным, юридическим или налоговым советом. Токенизированные активы несут риски потери средств и могут отличаться по правам от базовых ценных бумаг (дивиденды, голосование и пр.). Исследуй и принимай решения самостоятельно.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Entrance animation for gradient text
+    gsap.from('h1 .bg-clip-text', { duration: 1.2, ease: 'power3.out', yPercent: 20, opacity: 0 })
+
+    // Lead form handler (demo: prints to console). Replace with your endpoint (CF Worker / Telegram Bot)
+    const form = document.getElementById('leadForm');
+    const status = document.getElementById('leadStatus');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      status.textContent = 'Отправляем…';
+      try {
+        // TODO: замените URL на ваш Cloudflare Worker или Telegram bot endpoint
+        // пример Worker: fetch('https://your-worker.example.workers.dev', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(data) })
+        console.log('Lead submitted', data);
+        await new Promise(r=>setTimeout(r, 600));
+        status.textContent = 'Заявка отправлена! Мы свяжемся с тобой.';
+        form.reset();
+      } catch (err) {
+        status.textContent = 'Ошибка отправки. Попробуй снова или напиши в Telegram.';
+      }
+    });
+  </script>
+</body>
+</html>
