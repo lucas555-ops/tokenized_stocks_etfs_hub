@@ -19,9 +19,9 @@
     /* Cards & buttons */
     .glass { background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); }
     .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,0.06); }
-    .btn-primary { position:relative; overflow:hidden; background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#041016; font-weight: 800; }
-    .btn-primary::after{ content:''; position:absolute; inset:auto -20% 0; height:120%; transform:translateX(-120%) rotate(8deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent); transition:transform .7s ease; }
-    .btn-primary:hover::after{ transform:translateX(120%) rotate(8deg); }
+    .btn-primary { position:relative; overflow:hidden; background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#041016; font-weight: 800; border-radius:0.75rem; }
+    .btn-primary::after{ content:none; }
+    .btn-primary:hover::after{ content:none; }
     .chip { border:1px solid rgba(255,255,255,0.12); }
     /* Hero shimmer card */
     .shimmer{background:linear-gradient(110deg, rgba(255,255,255,.08) 8%, rgba(255,255,255,.18) 18%, rgba(255,255,255,.08) 33%);background-size:200% 100%;animation:shimmer 2.2s linear infinite}
