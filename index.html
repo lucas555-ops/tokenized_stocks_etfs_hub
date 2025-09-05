@@ -15,28 +15,32 @@
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-    :root{ --bg:#0b0e14; --muted:#9aa5b1; --accent:#6ee7b7; --accent-2:#22d3ee; }
-    html, body { background: var(--bg); color: #e5e7eb; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
-    /* Cards & buttons */
-    .glass { background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); }
-    .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,0.06); }
-    .btn-primary { position:relative; overflow:hidden; background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#041016; font-weight: 800; border-radius:0.75rem; }
-    .btn-primary::after{ content:none; }
-    .btn-primary:hover::after{ content:none; }
-    .chip { border:1px solid rgba(255,255,255,0.12); }
-    /* Hero shimmer card */
-    .shimmer{background:linear-gradient(110deg, rgba(255,255,255,.08) 8%, rgba(255,255,255,.18) 18%, rgba(255,255,255,.08) 33%);background-size:200% 100%;animation:shimmer 2.2s linear infinite}
-    @keyframes shimmer{to{background-position-x:-200%}}
-    /* Background overlay */
-    #vanta{opacity:1 !important; filter:none}   
-    .bg-overlay{background:
-      radial-gradient(900px 600px at 70% 10%, rgba(8,12,20,.18), transparent 64%),
-      radial-gradient(1000px 700px at 8% 65%, rgba(8,12,20,.12), transparent 64%),
-      linear-gradient(180deg, rgba(5,8,15,.12), rgba(5,8,15,.28))}  
-    /* Nav blur */
-    .nav-blur{backdrop-filter: blur(10px); background: rgba(5,8,15,.45); border-bottom:1px solid rgba(255,255,255,.08)}
-      @media (max-width: 768px){#vanta{opacity:.85}}
-    @media (prefers-reduced-motion: reduce){#vanta{opacity:.7}}
+  :root{ --bg:#0b0e14; --muted:#9aa5b1; --accent:#6ee7b7; --accent-2:#22d3ee; }
+  html, body { background: var(--bg); color: #e5e7eb; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  /* Cards & buttons */
+  .glass { background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); }
+  .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,0.06); }
+  .btn-primary { position:relative; overflow:hidden; background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#041016; font-weight: 800; border-radius:0.75rem; }
+  .btn-primary::after{ content:none; }
+  .btn-primary:hover::after{ content:none; }
+  .chip { border:1px solid rgba(255,255,255,0.12); }
+  /* Hero shimmer card */
+  .shimmer{background:linear-gradient(110deg, rgba(255,255,255,.08) 8%, rgba(255,255,255,.18) 18%, rgba(255,255,255,.08) 33%);background-size:200% 100%;animation:shimmer 2.2s linear infinite}
+  @keyframes shimmer{to{background-position-x:-200%}}
+  /* Background overlay - ИСПРАВЛЕНО */
+  #vanta{opacity:.85;filter:saturate(1.1) brightness(1.05) contrast(.98)}
+  .bg-overlay{background:
+    radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.15), transparent 70%),
+    radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.10), transparent 70%),
+    linear-gradient(180deg, rgba(5,8,15,.20), rgba(5,8,15,.45))}
+  /* Nav blur */
+  .nav-blur{backdrop-filter: blur(10px); background: rgba(5,8,15,.45); border-bottom:1px solid rgba(255,255,255,.08)}
+  
+  /* Адаптивность для мобильных */
+  @media (max-width: 768px){
+    #vanta{opacity:.75}
+    .bg-overlay{background: linear-gradient(180deg, rgba(5,8,15,.25), rgba(5,8,15,.5))}
+  }
 </style>
 </head>
 <body>
