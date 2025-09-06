@@ -3,452 +3,332 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Tokenized Stocks & ETFs Hub — Crypto Onboarding-as-a-Service</title>
-  <meta name="description" content="Купи токенизированные акции и ETF через криптовалюту. Онбординг, портфель, сопровождение. Без брокеров — только кошелёк и USDT."/>
+  <title>Tokenized Stocks & ETFs Hub — xStocks hub</title>
+  <meta name="description" content="Купи токенизированные акции и ETF через крипту. Онбординг, портфель, сопровождение. Без брокеров — только кошелёк и USDT."/>
+
+  <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+
   <!-- Effects libs -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" crossorigin="anonymous"></script>
+
   <style>
     :root{ --bg:#0b0e14; --muted:#9aa5b1; --accent:#6ee7b7; --accent-2:#22d3ee; }
-    html, body { background: var(--bg); color: #e5e7eb; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    html, body { background: var(--bg); color: #e5e7eb; font-family: 'Inter', system-ui; }
+    section, header, footer{position:relative; z-index:20}
+    h1,h2,h3,p,details,summary,button,a,input,textarea,select,form{position:relative; z-index:30}
 
-    /* === Glow Cards === */
-    .glow-card{position:relative;overflow:hidden;isolation:isolate;border-radius:1.25rem;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(106,230,255,.22);box-shadow:0 10px 28px rgba(0,0,0,.48),0 0 0 1px rgba(106,230,255,.08),0 0 32px rgba(0,236,255,.12)}
-    .glow-card::before{content:"";position:absolute;inset:-1px;padding:1px;border-radius:inherit;background:linear-gradient(135deg,rgba(106,230,255,.55),rgba(34,211,238,.35) 45%,rgba(106,230,255,.55));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+    /* Cards & Buttons */
+    .glow-card{position:relative;overflow:hidden;border-radius:1.25rem;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(106,230,255,.22);box-shadow:0 10px 28px rgba(0,0,0,.48)}
     .glow-card::after{content:"";position:absolute;inset:-12px;z-index:-1;border-radius:calc(1.25rem + 12px);background:radial-gradient(420px 180px at 50% 0%,rgba(34,211,238,.18),transparent 60%);filter:blur(14px)}
-    .glow-card:hover{transform:translateY(-1px);box-shadow:0 16px 44px rgba(0,0,0,.54),0 0 0 1px rgba(106,230,255,.14),0 0 60px rgba(0,236,255,.2)}
 
-    /* === Buttons === */
-    .btn-primary{position:relative;overflow:hidden;contain:paint;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041016;font-weight:800;border-radius:.75rem;box-shadow:0 10px 30px rgba(34,211,238,.25), inset 0 0 0 1px rgba(0,0,0,.05);transition:transform .15s ease}
-    .btn-primary:hover{box-shadow:0 16px 44px rgba(34,211,238,.35), inset 0 0 0 1px rgba(0,0,0,.06)}
-    .btn-primary:active{transform:translateY(1px) scale(.995);box-shadow:inset 0 4px 18px rgba(0,0,0,.25),0 8px 26px rgba(34,211,238,.25)}
-    /* live gradient */
-    @keyframes gradShift{0%{background-position:0% 50%}100%{background-position:200% 50%}}
-    .gradient-shift{background-image:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent));background-size:200% 100%;animation:gradShift 8s linear infinite}
-    /* ghost */
-    .btn-ghost{position:relative;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#e6fbff;border-radius:.75rem;transition:box-shadow .25s ease,border-color .25s ease,background .25s ease}
-    .btn-ghost:hover{border-color:rgba(106,230,255,.35);box-shadow:0 0 0 1px rgba(106,230,255,.18),0 12px 28px rgba(0,236,255,.12);background:rgba(255,255,255,.06)}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041016;font-weight:800;border-radius:.75rem;padding:.75rem 1.5rem;box-shadow:0 10px 30px rgba(34,211,238,.25);transition:transform .15s ease}
+    .btn-primary:active{transform:translateY(1px) scale(.995)}
+    .btn-ghost{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#e6fbff;border-radius:.75rem;padding:.75rem 1.25rem}
+    .btn-ghost:hover{border-color:rgba(106,230,255,.35);box-shadow:0 0 0 1px rgba(106,230,255,.18),0 12px 28px rgba(0,236,255,.12)}
 
-    /* Tilt */
     .tilt{will-change:transform;transform-style:preserve-3d}
     .tilt>*{transform:translateZ(18px)}
     .no-tilt:hover{transform:none !important}
 
-    /* Hero shimmer card */
-    .shimmer{background:linear-gradient(110deg, rgba(255,255,255,.08) 8%, rgba(255,255,255,.18) 18%, rgba(255,255,255,.08) 33%);background-size:200% 100%;animation:shimmer 2.2s linear infinite}
-    @keyframes shimmer{to{background-position-x:-200%}}
-
-    /* Background overlay (soften Vanta) */
+    /* Background */
     #vanta{opacity:1;filter:none;will-change:transform}
-    .bg-overlay{background:radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.55), transparent 60%),radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.45), transparent 60%),linear-gradient(180deg, rgba(5,8,15,.75), rgba(5,8,15,.95))}
-    @media (max-width: 768px){#vanta{opacity:.5}}
-    @media (prefers-reduced-motion: reduce){#vanta{opacity:.45;filter:saturate(.6) brightness(.8)}}
-
-    /* Nav blur */
+    .bg-overlay{background:
+      radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.55), transparent 60%),
+      radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.45), transparent 60%),
+      linear-gradient(180deg, rgba(5,8,15,.75), rgba(5,8,15,.95))}
     .nav-blur{backdrop-filter: blur(10px); background: rgba(5,8,15,.45); border-bottom:1px solid rgba(255,255,255,.08)}
-    section, header, footer{position:relative; z-index:10}
 
-    /* === Hero giant background text === */
-    /* moved to dedicated separator */
-.section-watermark{position:relative}
-.section-watermark::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, var(--bg) 0%, rgba(11,14,20,0) 22%, rgba(11,14,20,0) 78%, var(--bg) 100%)}
-.wm-text{display:flex;align-items:center;justify-content:center;font-size:clamp(6rem,20vw,18rem);font-weight:800;letter-spacing:-.04em;color:rgba(255,255,255,.035);text-transform:none;user-select:none;pointer-events:none}
+    /* Watermark section */
+    .section-watermark{position:relative}
+    .section-watermark::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, var(--bg) 0%, rgba(11,14,20,0) 22%, rgba(11,14,20,0) 78%, var(--bg) 100%)}
 
-/* Logos & modal */
-.logo-grid{position:relative;z-index:10;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
-@media (max-width:1024px){.logo-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media (max-width:640px){.logo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.app-icon{border-radius:20px;display:flex;align-items:center;justify-content:center;height:82px;box-shadow:0 10px 22px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
-.app-icon:hover{transform:translateY(-2px);box-shadow:0 20px 38px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
-.app-icon svg{width:42px;height:42px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45))}
-.app-ticker{margin-top:8px;font-weight:800}
-.app-name{margin-top:2px;font-size:.85rem;color:#a8b3c0}
+    /* Animated Solana-like gradient on the watermark text */
+    .wm-text{
+      display:flex;align-items:center;justify-content:center;
+      font-size:clamp(6rem,20vw,18rem);font-weight:900;letter-spacing:-.035em;
+      background:linear-gradient(90deg,#14F195,#9945FF,#00C2FF,#14F195);
+      background-size:300% 100%;
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;color:transparent;
+      user-select:none;pointer-events:none;
+      text-shadow:0 0 10px rgba(20,241,149,.12),0 0 22px rgba(0,194,255,.10);
+      animation:wm-shine 9s linear infinite, wm-glow 4.5s ease-in-out infinite alternate;
+    }
+    @keyframes wm-shine{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+    @keyframes wm-glow{from{ text-shadow:0 0 6px rgba(20,241,149,.10), 0 0 12px rgba(0,194,255,.10)} to{ text-shadow:0 0 18px rgba(20,241,149,.28), 0 0 34px rgba(0,194,255,.24)}}
 
-/* modal */
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:60}
-.modal{width:min(960px,92vw);max-height:86vh;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.5)}
-.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
-.modal-body{display:grid;grid-template-rows:auto 1fr;gap:10px;padding:14px 16px}
-.list{overflow:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
-.row{display:grid;grid-template-columns:2fr 2fr 2fr;gap:12px;padding:12px 14px;align-items:center;border-bottom:1px solid rgba(255,255,255,.06)}
-.row:hover{background:rgba(255,255,255,.04)}
-.row .cell-muted{color:#9aa5b1;font-size:.9rem}
-.search{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);padding:10px 12px;outline:none}
-.close-btn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);padding:8px 10px;border-radius:10px}
+    /* Logo grid */
+    .logo-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
+    @media (max-width:1024px){.logo-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    @media (max-width:640px){.logo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .app-icon{border-radius:20px;display:flex;align-items:center;justify-content:center;height:82px;box-shadow:0 10px 22px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;background:rgba(255,255,255,.03)}
+    .app-icon:hover{transform:translateY(-2px);box-shadow:0 20px 38px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
+    .app-icon img{width:42px;height:42px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45))}
+    .app-ticker{margin-top:8px;font-weight:800}
+    .app-name{margin-top:2px;font-size:.85rem;color:#a8b3c0}
 
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:60}
+    .modal{width:min(960px,92vw);max-height:86vh;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.5);display:flex;flex-direction:column}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .modal-body{display:flex;flex-direction:column;gap:10px;padding:14px 16px;flex:1;min-height:0}
+    .list{flex:1;overflow-y:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+    .row{display:grid;grid-template-columns:2fr 3fr;gap:12px;padding:12px 14px;align-items:center;border-bottom:1px solid rgba(255,255,255,.06)}
+    .row:hover{background:rgba(255,255,255,.04)}
+    .row .cell-muted{color:#9aa5b1;font-size:.9rem}
+    .search{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);padding:10px 12px;outline:none}
+    .close-btn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);padding:8px 10px;border-radius:10px}
+    .row a{color:var(--accent-2);text-decoration:none}
+    .row a:hover{text-decoration:underline}
+
+    /* Pricing sheen */
+    .plan{position:relative;overflow:hidden}
+    .plan.sheen::before{content:"";position:absolute;inset:-20%;transform:skewX(-18deg) translateX(-140%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);filter:blur(6px);animation:plan-sheen 5.6s ease-in-out infinite}
+    @keyframes plan-sheen{0%{transform:skewX(-18deg) translateX(-140%)}45%{transform:skewX(-18deg) translateX(180%)}100%{transform:skewX(-18deg) translateX(180%)}}
+
+    /* FAQ toggle icons */
+    details summary {list-style:none}
+    details summary::-webkit-details-marker {display:none}
+    .toggle-icon {transition:transform .25s ease}
+    details[open] .toggle-icon {transform:rotate(45deg)}
   </style>
 </head>
-<body class="bg-bg-dark text-white font-body">
-
-  <!-- Background layers -->
+<body>
+  <!-- Background -->
   <div id="vanta" class="fixed inset-0 -z-10"></div>
-  <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none opacity-80"></div>
-  <script>
-    window.addEventListener('load',()=>{ 
-      VANTA.NET({ el: '#vanta', color: 0x18a4b9, backgroundColor: 0x05080f, points: 6.0, maxDistance: 16.0, spacing: 22.0, showDots: true, speed: 0.8, minHeight: 150.0, minWidth: 150.0, scale: 1.05, scaleMobile: 1.05 });
-      try{
-        if(window.VanillaTilt){
-          VanillaTilt.init(document.querySelectorAll('.glow-card:not(.no-tilt)'), { max: 6, speed: 500, glare: true, 'max-glare': .12, perspective: 900, scale: 1.01, easing: 'cubic-bezier(.22,1,.36,1)' });
-          VanillaTilt.init(document.querySelectorAll('.btn-primary'), { max: 3, speed: 400, glare: false, scale: 1.005 });
-        }
-      }catch(e){console.warn('Tilt init skipped', e)}
+  <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none"></div>
 
-      // Magnetic only for main CTAs (hero & mobile-bar). Form CTA — без магнита
-      document.addEventListener('pointermove', e=>{
-        document.querySelectorAll('.btn-magnetic').forEach(b=>{
-          const r=b.getBoundingClientRect();
-          const x=e.clientX-(r.left+r.width/2);
-          const y=e.clientY-(r.top+r.height/2);
-          const dist=Math.hypot(x,y);
-          const pull=Math.max(0,1-dist/260);
-          b.style.transform=`translate(${x*0.06*pull}px,${y*0.06*pull}px)`;
-        })
-      });
-      document.querySelectorAll('.btn-magnetic').forEach(b=>b.addEventListener('pointerleave',()=>b.style.transform=''));
-    })
-  </script>
-
-  <!-- Navbar -->
+  <!-- NAV -->
   <header class="sticky top-0 z-50 nav-blur">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <a href="#" class="flex items-center gap-2 font-extrabold tracking-tight text-white">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 12a8 8 0 1016 0 8 8 0 10-16 0z" stroke="url(#g)" stroke-width="2"/>
-            <path d="M8 12h8M12 8v8" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round"/>
-            <defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6ee7b7"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
-          </svg>
-          <span>Tokenized Hub</span>
-        </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm text-gray-300">
-          <a href="#how" class="hover:text-white">Как это работает</a>
-          <a href="#portfolio" class="hover:text-white">Портфель</a>
-          <a href="#pricing" class="hover:text-white">Тарифы</a>
-          <a href="#faq" class="hover:text-white">FAQ</a>
-        </nav>
-        <div class="flex items-center gap-3">
-          <a href="#start" class="btn-primary rounded-xl px-4 py-2">Начать</a>
-        </div>
-      </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
+      <a href="#" class="font-extrabold tracking-tight text-white">xStocks hub</a>
+      <nav class="hidden md:flex gap-6 text-sm text-gray-300">
+        <a href="#how" class="hover:text-white">Как это работает</a>
+        <a href="#portfolio" class="hover:text-white">Портфель</a>
+        <a href="#pricing" class="hover:text-white">Тарифы</a>
+        <a href="#faq" class="hover:text-white">FAQ</a>
+      </nav>
+      <a href="#start" class="btn-primary">Начать</a>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="py-20 md:py-28 relative">
-    
+  <!-- HERO -->
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 items-center gap-10">
+      <div>
+        <div class="inline-flex items-center gap-2 border border-white/15 rounded-full px-3 py-1 text-xs text-gray-300 mb-4 bg-white/5">
+          <span class="h-2 w-2 rounded-full bg-emerald-400"></span> Без брокеров • Только кошелёк и USDT
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
+          Tokenized Wall Street <span class="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">for Everyone</span>
+        </h1>
+        <p class="mt-6 text-lg text-gray-300 max-w-xl">Покупайте токенизированные акции и ETF через крипту. Полное сопровождение: от покупки USDT до готового портфеля. Apple, Tesla, S&P 500. Токены обеспечены базовыми бумагами 1:1.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#start" class="btn-primary">Начать сейчас</a>
+          <a href="#how" class="btn-ghost">Узнать больше</a>
+        </div>
+        <div class="mt-6 flex items-center gap-4 text-sm text-gray-400">
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 bg-emerald-400 rounded-full"></span> Вход от $100</div>
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 bg-cyan-400 rounded-full"></span> Доставка за 24 часа</div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="glow-card tilt rounded-3xl p-6">
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="glow-card p-4"><div class="text-gray-400">Apple xStock</div><div class="text-2xl font-extrabold">AAPLx</div><div class="mt-2 text-emerald-300">+1.24%</div></div>
+            <div class="glow-card p-4"><div class="text-gray-400">TSLA xStock</div><div class="text-2xl font-extrabold">TSLAx</div><div class="mt-2 text-emerald-300">+2.87%</div></div>
+            <div class="glow-card p-4"><div class="text-gray-400">SP500 xStock</div><div class="text-2xl font-extrabold">SPY</div><div class="mt-2 text-emerald-300">+0.91%</div></div>
+            <div class="glow-card p-4"><div class="text-gray-400">Nasdaq 100</div><div class="text-2xl font-extrabold">QQQ</div><div class="mt-2 text-emerald-300">+1.58%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- WATERMARK + ICONS -->
+  <section class="section-watermark py-16 md:py-24">
+    <div class="wm-text">xStocks</div>
     <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-2 items-center gap-10">
-        <div>
-          <div class="inline-flex items-center gap-2 border border-white/15 rounded-full px-3 py-1 text-xs text-gray-300 mb-4 bg-white/5">
-            <span class="h-2 w-2 rounded-full bg-emerald-400"></span> Без брокеров • Только кошелёк и USDT
-          </div>
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">Tokenized Wall Street <span class="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">for Everyone</span></h1>
-          <p class="mt-6 text-lg text-gray-300 max-w-xl">Покупайте токенизированные акции и ETF через крипту. Полное сопровождение: от покупки USDT до готового портфеля. Apple, Tesla, S&P 500. Токены обеспечены базовыми бумагами 1:1</p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#start" class="btn-primary gradient-shift btn-magnetic rounded-xl px-6 py-3">Начать сейчас</a>
-            <a href="#how" class="btn-ghost rounded-xl px-6 py-3">Узнать больше</a>
-          </div>
-          <div class="mt-6 flex items-center gap-4 text-sm text-gray-400">
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 bg-emerald-400 rounded-full"></span> Вход от $100</div>
-            <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 bg-cyan-400 rounded-full"></span> Доставка за 24 часа</div>
-          </div>
-        </div>
-        <div class="relative">
-          <div class="glow-card tilt rounded-3xl p-6">
-            <div class="p-6 rounded-2xl shimmer"></div>
-            <div class="absolute -inset-1 rounded-3xl pointer-events-none" style="box-shadow:0 0 120px rgba(34,211,238,.25);"></div>
-            <div class="grid grid-cols-2 gap-4 text-sm mt-6">
-              <div class="glow-card p-4">
-                <div class="text-gray-400">Apple xStock</div>
-                <div class="text-2xl font-extrabold">AAPLx</div>
-                <div class="mt-2 text-emerald-300">+1.24%</div>
-              </div>
-              <div class="glow-card p-4">
-                <div class="text-gray-400">TSLA xStock</div>
-                <div class="text-2xl font-extrabold">TSLAx</div>
-                <div class="mt-2 text-emerald-300">+2.87%</div>
-              </div>
-              <div class="glow-card p-4">
-                <div class="text-gray-400">SP500 xStock</div>
-                <div class="text-2xl font-extrabold">SPYx</div>
-                <div class="mt-2 text-emerald-300">+0.91%</div>
-              </div>
-              <div class="glow-card p-4">
-                <div class="text-gray-400">NVIDIA xStock </div>
-                <div class="text-2xl font-extrabold">NVIDIAx </div>
-                <div class="mt-2 text-emerald-300">+1.58%</div>
-              </div>
-            </div>
-            <p class="mt-4 text-xs text-gray-400">*Данные — пример. Не инвестиционный совет.</p>
-          </div>
-        </div>
-      </div>
+      <h3 class="text-center text-3xl font-extrabold">Топовые токенизированные активы</h3>
+<p class="text-center text-sm text-gray-400 mb-8">Нажми на любой логотип, чтобы посмотреть весь список активов</p>
+      <div id="logoGrid" class="logo-grid"></div>
+      <div class="flex justify-center mt-8"><button class="btn-primary" onclick="openProducts()">Все тикеры</button></div>
     </div>
   </section>
 
-<!-- Section watermark -->
-<section class="section-watermark py-10 md:py-14">
-  <div class="wm-text">xStocks</div>
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-    <h3 class="text-center text-2xl md:text-3xl font-extrabold mb-6">Топовые токенизированные активы</h3>
-    <div class="logo-grid">
-      <div class="text-center" onclick="openProducts('NFLXx')">
-        <div class="app-icon"><img src="assets/icons/NFLXx.svg" alt="NFLXx"/></div>
-        <div class="app-ticker">NFLXx</div><div class="app-name">Netflix</div>
-      </div>
-      <div class="text-center" onclick="openProducts('METAx')">
-        <div class="app-icon"><img src="assets/icons/METAx.svg" alt="METAx"/></div>
-        <div class="app-ticker">METAx</div><div class="app-name">Meta</div>
-      </div>
-      <div class="text-center" onclick="openProducts('HOODx')">
-        <div class="app-icon"><img src="assets/icons/HOODx.svg" alt="HOODx"/></div>
-        <div class="app-ticker">HOODx</div><div class="app-name">Robinhood</div>
-      </div>
-      <div class="text-center" onclick="openProducts('COINx')">
-        <div class="app-icon"><img src="assets/icons/COINx.svg" alt="COINx"/></div>
-        <div class="app-ticker">COINx</div><div class="app-name">Coinbase</div>
-      </div>
-      <div class="text-center" onclick="openProducts('AMZNx')">
-        <div class="app-icon"><img src="assets/icons/AMZNx.svg" alt="AMZNx"/></div>
-        <div class="app-ticker">AMZNx</div><div class="app-name">Amazon</div>
-      </div>
-      <div class="text-center" onclick="openProducts('NVDAx')">
-        <div class="app-icon"><img src="assets/icons/NVDAx.svg" alt="NVDax"/></div>
-        <div class="app-ticker">NVDax</div><div class="app-name">NVIDIA</div>
-      </div>
-      <div class="text-center" onclick="openProducts('AZNx')">
-        <div class="app-icon"><img src="assets/icons/AZNx.svg" alt="AZNx"/></div>
-        <div class="app-ticker">AZNx</div><div class="app-name">AstraZeneca</div>
-      </div>
-      <div class="text-center" onclick="openProducts('MCDx')">
-        <div class="app-icon"><img src="assets/icons/MCDx.svg" alt="MCDx"/></div>
-        <div class="app-ticker">MCDx</div><div class="app-name">McDonald's</div>
-      </div>
-      <div class="text-center" onclick="openProducts('AAPLx')">
-        <div class="app-icon"><img src="assets/icons/AAPLx.svg" alt="AAPLx"/></div>
-        <div class="app-ticker">AAPLx</div><div class="app-name">Apple</div>
-      </div>
-      <div class="text-center" onclick="openProducts('MRKx')">
-        <div class="app-icon"><img src="assets/icons/MRKx.svg" alt="MRKx"/></div>
-        <div class="app-ticker">MRKx</div><div class="app-name">Merck</div>
-      </div>
-      <div class="text-center" onclick="openProducts('TSLAx')">
-        <div class="app-icon"><img src="assets/icons/TSLAx.svg" alt="TSLAx"/></div>
-        <div class="app-ticker">TSLAx</div><div class="app-name">Tesla</div>
-      </div>
-      <div class="text-center" onclick="openProducts('MSFTx')">
-        <div class="app-icon"><img src="assets/icons/MSFTx.svg" alt="MSFTx"/></div>
-        <div class="app-ticker">MSFTx</div><div class="app-name">Microsoft</div>
-      </div>
-    </div>
-    <div class="text-center mt-6 text-sm text-gray-400">Нажми на любой логотип, чтобы посмотреть весь список активов</div>
-  </div>
-</section>
-
-  <!-- How it works -->
+  <!-- HOW -->
   <section id="how" class="py-16 md:py-24">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-extrabold">Как это работает</h2>
-        <p class="mt-3 text-gray-400">Три шага — и у тебя портфель токенизированных акций и ETF.</p>
-      </div>
-      <div class="mt-10 grid md:grid-cols-3 gap-6">
-        <div class="glow-card p-6">
-          <div class="text-sm text-gray-400">Шаг 1</div>
-          <h3 class="mt-1 text-xl font-bold">P2P: покупка USDT</h3>
-          <p class="mt-2 text-gray-300">Помогаем купить USDT с карты/наличных через Binance/Bybit/OKX P2P.</p>
-        </div>
-        <div class="glow-card p-6">
-          <div class="text-sm text-gray-400">Шаг 2</div>
-          <h3 class="mt-1 text-xl font-bold">Кошелёк</h3>
-          <p class="mt-2 text-gray-300">Настраиваем Phantom/MetaMask. Ключи и активы — под твоим контролем.</p>
-        </div>
-        <div class="glow-card p-6">
-          <div class="text-sm text-gray-400">Шаг 3</div>
-          <h3 class="mt-1 text-xl font-bold">Tokenized Stocks & ETFs</h3>
-          <p class="mt-2 text-gray-300">Подключаем платформу и собираем стартовый портфель (AAPL, TSLA, SPY, QQQ).</p>
-        </div>
-      </div>
-      <div class="mt-8 text-center">
-        <a href="#start" class="btn-primary rounded-xl px-6 py-3">Начать с $100</a>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-4xl font-extrabold">Как это работает</h2>
+      <p class="mt-2 text-gray-300">Три шага — и у тебя портфель токенизированных акций и ETF.</p>
+      <div class="grid md:grid-cols-3 gap-6 mt-10">
+        <div class="glow-card p-6 text-left"><div class="text-gray-400">Шаг 1</div><div class="text-2xl font-extrabold mt-1">P2P: покупка USDT</div><p class="mt-3 text-gray-300">Помогаем купить USDT с карты/наличных через Binance/Bybit/OKX P2P.</p></div>
+        <div class="glow-card p-6 text-left"><div class="text-gray-400">Шаг 2</div><div class="text-2xl font-extrabold mt-1">Кошелёк</div><p class="mt-3 text-gray-300">Настраиваем Phantom/MetaMask. Ключи и активы — под твоим контролем.</p></div>
+        <div class="glow-card p-6 text-left"><div class="text-gray-400">Шаг 3</div><div class="text-2xl font-extrabold mt-1">Tokenized Stocks & ETFs</div><p class="mt-3 text-gray-300">Подключаем платформу и собираем стартовый портфель (AAPL, TSLA, SPY, QQQ).</p></div>
       </div>
     </div>
   </section>
 
-  <!-- Portfolio -->
-  <section id="portfolio" class="py-16 md:py-24">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-2 items-start gap-10">
-        <div>
-          <h2 class="text-3xl md:text-4xl font-extrabold">Main Portfolio</h2>
-          <p class="mt-3 text-gray-200">Готовый диверсифицированный набор активов для старта. Можно начать с $100 и постепенно наращивать позиции.</p>
-          <ul class="mt-6 space-y-3 text-gray-200">
-            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 🍏 Apple (AAPL)</li>
-            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 🚗 Tesla (TSLA)</li>
-            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 📈 S&P 500 (SPY)</li>
-            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 💻 Nasdaq 100 (QQQ)</li>
-          </ul>
-          <p class="mt-6 text-sm text-gray-400">*Состав и веса портфеля могут отличаться в зависимости от доступности токенизированных активов.</p>
-        </div>
-        <div class="glow-card p-6">
-          <h3 class="text-xl font-bold">Твой путь к владению активами</h3>
-          <ol class="mt-4 space-y-3 text-gray-300 list-decimal list-inside">
-            <li>Определяем сумму старта (от $100).</li>
-            <li>Покупаем USDT через P2P.</li>
-            <li>Создаём и настраиваем кошелёк.</li>
-            <li>Подключаемся к платформе токенизированных активов.</li>
-            <li>Собираем и ребалансируем портфель.</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Services -->
-  <section class="py-16 md:py-24">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-3л md:text-4xl font-extrabold">Наши услуги</h2>
-        <p class="mt-3 text-gray-400">Зарабатываем сервисной моделью: онбординг, сопровождение, транзакции.</p>
-      </div>
-      <div class="mt-10 grid md:grid-cols-4 gap-6">
-        <div class="glow-card p-6">
-          <h3 class="text-lg font-bold">Onboarding</h3>
-          <p class="mt-2 text-gray-300">P2P, кошелёк, первая покупка. <span class="text-emerald-300">$50–100</span></p>
-        </div>
-        <div class="glow-card p-6">
-          <h3 class="text-lg font-bold">Portfolio Setup</h3>
-          <p class="mt-2 text-gray-300">Сборка Main Portfolio. <span class="text-emerald-300">2–3%</span></p>
-        </div>
-        <div class="glow-card p-6">
-          <h3 class="text-lg font-bold">Rebalancing</h3>
-          <p class="mt-2 text-gray-300">Пополнения/обмены. <span class="text-emerald-300">1–2%</span></p>
-        </div>
-        <div class="glow-card p-6">
-          <h3 class="text-lg font-bold">Premium</h3>
-          <p class="mt-2 text-gray-300">Персонально + чат. <span class="text-emerald-300">$50/мес</span></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing -->
+  <!-- PRICING -->
   <section id="pricing" class="py-16 md:py-24">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-extrabold">Тарифы</h2>
-        <p class="mt-3 text-gray-400">Выбери уровень — мы сделаем остальное.</p>
-      </div>
-      <div class="mt-10 grid md:grid-cols-3 gap-6">
-        <div class="glow-card p-6">
-          <div class="text-sm text-gray-400">Starter</div>
-          <div class="mt-1 text-3xl font-extrabold">$100+</div>
-          <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-4xl font-extrabold">Тарифы</h2>
+      <div class="grid md:grid-cols-3 gap-6 mt-10">
+        <!-- Lite -->
+        <div class="glow-card plan p-6 flex flex-col items-start text-left">
+          <div class="text-2xl font-extrabold">Lite</div>
+          <div class="text-4xl font-extrabold mt-2">$100</div>
+          <ul class="mt-4 space-y-2 text-gray-300">
             <li>Онбординг и первый портфель</li>
             <li>Руководство по безопасности</li>
             <li>Комиссия сервиса: 10%</li>
           </ul>
-          <a href="#start" class="mt-6 inline-block btn-primary rounded-xl px-4 py-2">Выбрать</a>
+          <a href="#start" class="btn-primary mt-6">Выбрать</a>
         </div>
-        <div class="glow-card p-6 ring-2 ring-emerald-400/30">
-          <div class="text-sm text-gray-400">Standard</div>
-          <div class="mt-1 text-3xl font-extrabold">$500+</div>
-          <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+        <!-- Pro (sheen) -->
+        <div class="glow-card plan sheen p-6 flex flex-col items-start text-left">
+          <div class="text-2xl font-extrabold">Pro</div>
+          <div class="text-4xl font-extrabold mt-2">$500</div>
+          <ul class="mt-4 space-y-2 text-gray-300">
             <li>Apple + Tesla + ETF</li>
             <li>Поддержка 30 дней</li>
             <li>Комиссия сервиса: 5%</li>
           </ul>
-          <a href="#start" class="mt-6 inline-block btn-primary gradient-shift rounded-xl px-4 py-2">Выбрать</a>
+          <a href="#start" class="btn-primary mt-6">Выбрать</a>
         </div>
-        <div class="glow-card p-6">
-          <div class="text-sm text-gray-400">Premium</div>
-          <div class="mt-1 text-3xl font-extrabold">$1000+</div>
-          <ul class="mt-4 space-y-2 text-gray-300 text-sm">
+        <!-- Premium -->
+        <div class="glow-card plan p-6 flex flex-col items-start text-left">
+          <div class="text-2xl font-extrabold">Premium</div>
+          <div class="text-4xl font-extrabold mt-2">$1000+</div>
+          <ul class="mt-4 space-y-2 text-gray-300">
             <li>Индивидуальная стратегия</li>
             <li>Ребалансировка</li>
             <li>Закрытый чат</li>
           </ul>
-          <a href="#start" class="mt-6 inline-block btn-primary rounded-xl px-4 py-2">Выбрать</a>
+          <a href="#start" class="btn-primary mt-6">Выбрать</a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Start form -->
-  <section id="start" class="py-16 md:py-24">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <div class="glow-card no-tilt p-6 md:p-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold">Начать</h2>
-        <p class="mt-2 text-gray-300">Оставь контакт — свяжемся, проведём онбординг и соберём первый портфель.</p>
-        <form id="leadForm" class="mt-6 grid gap-4">
-          <div>
-            <label class="block text-sm text-gray-400">Имя</label>
-            <input required name="name" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400" placeholder="Иван" />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400">Контакт (Telegram или Email)</label>
-            <input required name="contact" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400" placeholder="@username или email" />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400">Сумма старта (USD)</label>
-            <input required name="amount" type="number" min="100" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400" placeholder="100" />
-          </div>
-          <button id="ctaStart" class="btn-primary rounded-xl px-6 py-3 w-full md:w-auto" type="submit" data-loading="0" data-success="0"><span class="btn-spinner"></span><span class="btn-check">✔</span><span class="btn-text">Отправить заявку</span></button>
-          <p id="leadStatus" class="text-sm text-gray-400"></p>
-        </form>
-        <p class="mt-4 text-xs text-gray-400">Нажимая «Отправить заявку», ты соглашаешься с тем, что это не инвестиционный совет. Мы оказываем технические и сервисные услуги по онбордингу и сопровождению.</p>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
   <section id="faq" class="py-16 md:py-24">
-    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-center">FAQ</h2>
-      <div class="mt-10 space-y-4">
-        <details class="glow-card p-5">
-          <summary class="cursor-pointer font-semibold">Можно ли купить с карты?</summary>
-          <p class="mt-3 text-gray-300">Да, через P2P (Binance, Bybit, OKX). Мы помогаем пройти процесс безопасно.</p>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-4xl font-extrabold">FAQ — быстро по делу</h2>
+        <p class="mt-2 text-gray-300">Техсервис онбординга и сопровождения. Без брокеров — только кошелёк и USDT.</p>
+      </div>
+
+      <!-- KPIs -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-10">
+        <div class="glow-card p-4 text-center">
+          <div class="text-3xl font-extrabold">1–12 ч</div>
+          <div class="text-gray-300 text-sm">Онбординг и первая покупка</div>
+        </div>
+        <div class="glow-card p-4 text-center">
+          <div class="text-3xl font-extrabold">$100</div>
+          <div class="text-gray-300 text-sm">Минимальный старт</div>
+        </div>
+        <div class="glow-card p-4 text-center">
+          <div class="text-3xl font-extrabold">24/7</div>
+          <div class="text-gray-300 text-sm">Поддержка в мессенджере</div>
+        </div>
+      </div>
+
+      <!-- QA -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <details class="glow-card p-5" open>
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Это не инвестсовет?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Да. Мы — техсервис: онбординг, сборка и сопровождение портфеля, помощь с P2P/кошельком. Решения о покупке — за клиентом.</div>
         </details>
+
         <details class="glow-card p-5">
-          <summary class="cursor-pointer font-semibold">Где хранятся мои активы?</summary>
-          <p class="mt-3 text-gray-300">В твоём кошельке (Phantom/MetaMask). Ключи контролируешь ты. Мы доступа не имеем.</p>
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Где хранятся активы?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">На твоём кошельке Phantom/MetaMask. Ключи у тебя; доступа к ним мы не имеем. Мы не кастодиальный сервис.</div>
         </details>
+
         <details class="glow-card p-5">
-          <summary class="cursor-pointer font-semibold">Какая комиссия сервиса?</summary>
-          <p class="mt-3 text-gray-300">Onboarding $50–100, Portfolio 2–3%, транзакции 1–2%, премиум $50/мес.</p>
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Как купить USDT?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Через P2P: MEXC/Bybit/OKX и/или проверенные обменники (BestChange). Даем пошаговое руководство и проверочные чек-листы.</div>
         </details>
+
         <details class="glow-card p-5">
-          <summary class="cursor-pointer font-semibold">Сколько занимает процесс?</summary>
-          <p class="mt-3 text-gray-300">Обычно 12–24 часа с момента заявки и подтверждения деталей.</p>
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Сколько ждать?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Онбординг и первая сделка — от 1 до 12 часов после оплаты. Далее покупки/ребаланс — «в один клик».</div>
         </details>
+
+        <details class="glow-card p-5">
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Что такое токенизированные акции?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Это on-chain токены с резервированием 1:1 базовыми бумагами у провайдера. Позволяют держать экспозицию на акции/ETF в криптосреде.</div>
+        </details>
+
+        <details class="glow-card p-5">
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Какие комиссии?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Сервис: Lite — 10%, Pro — 5%, Premium — по договорённости.</li>
+              <li>Сеть/биржа: фактические on-chain и P2P издержки (отображаем заранее).</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="glow-card p-5">
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Как вывести или продать?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Токены продаются обратно на платформе/DEX либо конвертируются в стейблкоин и выводятся через P2P. Даем инструкцию и сопровождаем.</div>
+        </details>
+
+        <details class="glow-card p-5">
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Риски и ограничения?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Классические рыночные риски активов + риски провайдера токенизации и блокчейн-сети. Мы помогаем снижать операционные риски (процедуры/чек-листы).</div>
+        </details>
+
+        <details class="glow-card p-5">
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Налоги и отчётность?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Зависит от твоей юрисдикции. Предоставим выгрузки транзакций и структуру операций для бухгалтера/налогового консультанта.</div>
+        </details>
+
+        <details class="glow-card p-5">
+          <summary class="font-bold cursor-pointer flex items-center justify-between">Какая поддержка после старта?<span class='ml-2 text-accent-2 toggle-icon'>+</span></summary>
+          <div class="mt-3 text-gray-300">Lite — базовая поддержка в чате по онбордингу; Pro — 30 дней сопровождения; Premium — постоянная коммуникация и ребаланс‑план.</div>
+        </details>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-10">
+        <a href="#start" class="btn-primary inline-block">Задать вопрос / Оставить заявку</a>
+        <p class="text-gray-400 text-sm mt-3">Не нашёл ответа? Напиши — ответим в течение часа.</p>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="py-10 border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-sm text-gray-300">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <p>© <span id="year"></span> Tokenized Hub. All rights reserved.</p>
-        <div class="flex items-center gap-4">
-          <a href="#" class="hover:text-white">Условия сервиса</a>
-          <a href="#" class="hover:text-white">Политика конфиденциальности</a>
-          <a href="#" class="hover:text-white">Отказ от ответственности</a>
-        </div>
+  <!-- START FORM -->
+  <section id="start" class="py-16 md:py-24">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="glow-card p-6 md:p-8 no-tilt">
+        <h2 class="text-3xl font-extrabold">Начать</h2>
+        <p class="mt-2 text-gray-300">Оставь контакт — свяжемся, проведём онбординг и соберём первый портфель.</p>
+        <form id="leadForm" class="mt-6 grid gap-4">
+          <input required name="name" placeholder="Имя" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3"/>
+          <input required name="contact" placeholder="Telegram или Email" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3"/>
+          <input required name="amount" type="number" min="100" placeholder="Сумма старта (USD)" class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3"/>
+          <button id="ctaStart" class="btn-primary" type="submit">Отправить заявку</button>
+        </form>
       </div>
-      <p class="mt-4 text-xs text-gray-500">Отказ от ответственности: материалы на сайте не являются инвестиционным, юридическим или налоговым советом. Токенизированные активы несут риски потери средств и могут отличаться по правам от базовых ценных бумаг.</p>
     </div>
-  </footer>
+  </section>
 
-  <!-- Products Modal -->
+  <!-- SECTION WATERMARK -->
+  <div class="section-watermark">
+    <div class="wm-text">xStocks</div>
+  </div>
+
+  <!-- MODAL -->
   <div id="productsModal" class="modal-backdrop" aria-hidden="true">
     <div class="modal">
       <div class="modal-head">
@@ -456,207 +336,206 @@
         <button class="close-btn" onclick="closeProducts()">Закрыть</button>
       </div>
       <div class="modal-body">
-        <!-- quick lead form on top -->
         <form id="leadFormModal" class="grid md:grid-cols-3 gap-3">
-          <input name="name" class="search md:col-span-1" placeholder="Имя" required>
-          <input name="contact" class="search md:col-span-1" placeholder="Telegram или Email" required>
-          <button class="btn-primary rounded-xl px-4 py-2 md:col-span-1" type="submit">Оставить заявку</button>
+          <input name="name" class="search" placeholder="Имя" required>
+          <input name="contact" class="search" placeholder="Telegram или Email" required>
+          <button class="btn-primary rounded-xl px-4 py-2" type="submit">Оставить заявку</button>
         </form>
-        <!-- search/filter -->
-        <input id="productSearch" class="search" placeholder="Поиск по тикеру или названию…" oninput="filterProducts(this.value)">
-        <div id="productList" class="list"></div>
+        <input id="productSearch" class="search mt-3" placeholder="Поиск по тикеру или названию…" oninput="filterProducts(this.value)">
+        <div id="productList" class="list mt-3"></div>
       </div>
     </div>
   </div>
 
-  <!-- Mobile CTA bar + ToTop -->
-  <div class="fixed bottom-3 left-3 right-3 z-40 md:hidden">
-    <div class="glow-card p-2 backdrop-blur">
-      <a href="#start" class="btn-primary gradient-shift btn-magnetic w-full rounded-xl py-3 text-center">Начать с $100</a>
-    </div>
-  </div>
-  <button id="toTop" class="btn-ghost fixed bottom-20 right-4 md:right-6 px-3 py-2 rounded-xl opacity-0 transition-opacity">↑</button>
+  <!-- FOOTER -->
+  <footer class="py-8 border-t border-white/10 text-center">
+    <div class="text-xs text-gray-400">© 2025 xStocks hub</div>
+    <p class="mt-2 max-w-3xl mx-auto text-[12px] leading-relaxed text-gray-500">
+      Дисклеймер: информация на этом сайте не является инвестиционной рекомендацией, предложением или призывом к совершению сделок. Мы оказываем исключительно техническое сопровождение: помощь с онбордингом, настройкой кошельков и доступом к платформам. Решения о покупке/продаже активов принимаются пользователем самостоятельно и под его ответственность. На рынке существуют ценовые, технологические и правовые риски; провайдеры токенизации и сторонние сервисы не контролируются нами. Мы не кастодиальный сервис и не храним ваши ключи. Пользователь несёт ответственность за соблюдение законов своей юрисдикции и налоговую отчётность.
+    </p>
+  </footer>
 
   <script>
-    // Modal + products data
-    const products = [
-{t:'AAPLx', n:'Apple xStock',     s:'XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp', e:'0x9d275685dc284c8eb1c79f6aba7a63dc75ec890a'},
-{t:'AMZNx', n:'Amazon xStock',    s:'Xs3eBt7uRfJX8QUs4suhyU8p2M6DoUDrJyWBa8LLZsg', e:'0x3557ba345b01efa20a1bddc61f573bfd87195081'},
-{t:'AZNx',  n:'AstraZeneca xStock',s:'Xs3ZFkPYT2BN7qBMqf1j1bfTeTm1rFzEFSsQ1z3wAKU', e:'0x5d642505fe1a28897eb3baba665f454755d8daa2'},
-{t:'COINx', n:'Coinbase xStock',  s:'Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu', e:'0x364f210f430ec2448fc68a49203040f6124096f0'},
-{t:'HOODx', n:'Robinhood xStock', s:'XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg', e:'0xe1385fdd5ffb10081cd52c56584f25efa9084015'},
-{t:'MCDx',  n:\"McDonald's xStock\", s:'XsqE9cRRpzxcGKDXj1BJ7Xmg4GRhZoyY1KpmGSxAWT2', e:'0x80a77a372c1e12accda84299492f404902e2da67'},
-{t:'METAx', n:'Meta xStock',      s:'Xsa62P5mvPszXL1krVUnU5ar38bBSVcWAB6fmPCo5Zu', e:'0x96702be57cd9777f835117a809c7124fe4ec989a'},
-{t:'MRKx',  n:'Merck xStock',     s:'XsnQnU7AdbRZYe2akqqpibDdXjkieGFfSkbkjX1Sd1X', e:'0x17d8186ed8f68059124190d147174d0f6697dc40'},
-{t:'MSFTx', n:'Microsoft xStock', s:'XspzcW1PRtgf6Wj92HCiZdjzKCyFekVD8P5Ueh3dRMX', e:'0x5621737f42dae558b81269fcb9e9e70c19aa6b35'},
-{t:'NFLXx', n:'Netflix xStock',   s:'XsEH7wWfJJu2ZT3UCFeVfALnVA6CP5ur7Ee11KmzVpL', e:'0xa6a65ac27e76cd53cb790473e4345c46e5ebf961'},
-{t:'NVDax', n:'NVIDIA xStock',    s:'Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh', e:'0xc845b2894dbddd03858fd2d643b4ef725fe0849d'},
-{t:'TSLAx', n:'Tesla xStock',     s:'XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB', e:'0x8ad3c73f833d3f9a523ab01476625f269aeb7cf0'},
-    ];
-<script>
-  // --- helpers ---
-  const $ = (q, root=document) => root.querySelector(q);
-  const $$ = (q, root=document) => [...root.querySelectorAll(q)];
-  const short = (addr) => addr ? addr.slice(0,6) + '…' + addr.slice(-4) : '';
-
-  function solscanURL(addr){ return 'https://solscan.io/token/' + addr; }
-  function etherscanURL(addr){ return 'https://etherscan.io/token/' + addr; }
-
-  // Рендер строки списка
-  function productRow(p){
-    const sol = p.s ? `
-      <div class="cell-muted">
-        <div class="flex items-center gap-2">
-          <a href="${solscanURL(p.s)}" target="_blank" rel="noopener" class="underline">${short(p.s)}</a>
-          <button class="copy px-2 py-1 text-xs border border-white/15 rounded" data-copy="${p.s}">копировать</button>
-        </div>
-      </div>` : `<div class="cell-muted">—</div>`;
-
-    const eth = p.e ? `
-      <div class="cell-muted">
-        <div class="flex items-center gap-2">
-          <a href="${etherscanURL(p.e)}" target="_blank" rel="noopener" class="underline">${short(p.e)}</a>
-          <button class="copy px-2 py-1 text-xs border border-white/15 rounded" data-copy="${p.e}">копировать</button>
-        </div>
-      </div>` : `<div class="cell-muted">—</div>`;
-
-    return `
-      <div class="row" data-ticker="${p.t}">
-        <div><div class="font-semibold">${p.t}</div><div class="text-gray-300 text-sm">${p.n||''}</div></div>
-        ${sol}
-        ${eth}
-      </div>`;
-  }
-
-  // Рендер списка с фильтром
-  function renderProducts(filter='', preselect){
-    const list = $('#productList');
-    const q = filter.trim().toLowerCase();
-    const rows = products
-      .filter(p => !q || p.t.toLowerCase().includes(q) || (p.n||'').toLowerCase().includes(q))
-      .map(productRow)
-      .join('');
-    list.innerHTML = rows || `<div class="p-4 text-center text-gray-400">Ничего не найдено</div>`;
-
-    // copy buttons
-    $$('.copy', list).forEach(btn=>{
-      btn.addEventListener('click', ()=> {
-        navigator.clipboard.writeText(btn.dataset.copy||'');
-        btn.textContent = 'скопировано';
-        setTimeout(()=>btn.textContent='копировать', 1200);
-      });
+    /* Init effects */
+    window.addEventListener('load',()=>{
+      VANTA.NET({ el:'#vanta', color:0x18a4b9, backgroundColor:0x05080f, points:6.0, maxDistance:16.0, spacing:22.0, showDots:true, speed:.8, scale:1.05, scaleMobile:1.05 });
+      try{ VanillaTilt.init(document.querySelectorAll('.glow-card:not(.no-tilt)'),{max:6,speed:500,glare:true,'max-glare':.12,perspective:900,scale:1.01}); }catch(e){}
+      document.getElementById('year')?.textContent = new Date().getFullYear();
+      renderLogoGrid();
+      renderProducts(products);
     });
 
-    // проскроллить к выбранному
-    if(preselect){
-      const el = $(`.row[data-ticker="${preselect}"]`, list);
-      if(el){ el.scrollIntoView({block:'center'}); el.style.background='rgba(255,255,255,.06)'; setTimeout(()=>el.style.background='', 900); }
+    /* Modal controls */
+    function openProducts(){ document.getElementById('productsModal').style.display='flex'; }
+    function closeProducts(){ document.getElementById('productsModal').style.display='none'; }
+
+    /* Search filter */
+    function filterProducts(q=''){
+      q=q.toLowerCase();
+      renderProducts(products.filter(p=> p.t.toLowerCase().includes(q) || p.n.toLowerCase().includes(q) ));
     }
-  }
 
-  // Открыть / закрыть модалку
-  function openProducts(ticker){
-    const backdrop = $('#productsModal');
-    if(!backdrop) return;
-    renderProducts($('#productSearch')?.value || '', ticker);
-    backdrop.style.display = 'flex';
-    document.documentElement.style.overflow = 'hidden';
-  }
-  function closeProducts(){
-    const backdrop = $('#productsModal');
-    if(!backdrop) return;
-    backdrop.style.display = 'none';
-    document.documentElement.style.overflow = '';
-  }
-
-  // Экспортируем в window (чтобы вызывалось из onclick)
-  window.openProducts = openProducts;
-  window.closeProducts = closeProducts;
-  window.filterProducts = (val)=>renderProducts(val);
-
-  // Закрытие по клику вне окна и по Esc
-  document.addEventListener('click', (e)=>{
-    const m = $('#productsModal');
-    if(!m || m.style.display!=='flex') return;
-    const box = $('.modal', m);
-    if(!box.contains(e.target) && !e.target.closest('.app-icon')) closeProducts();
-  });
-  document.addEventListener('keydown', (e)=>{
-    if(e.key==='Escape') closeProducts();
-  });
-
-  // Инициализация списка при загрузке (чтобы поиск работал сразу)
-  document.addEventListener('DOMContentLoaded', ()=> {
-    if($('#productsModal')) renderProducts('');
-  });
-</script>
-
+    /* Render products list (Solana only) */
     function renderProducts(list){
-      const el = document.getElementById('productList');
-      el.innerHTML = '';
+      const el=document.getElementById('productList');
+      el.innerHTML='';
       list.forEach(p=>{
-        const row = document.createElement('div');
-        row.className = 'row';
-        row.innerHTML = `<div><strong>${p.t}</strong><div class="cell-muted">${p.n}</div></div>
-                         <div class="cell-muted">${p.s}</div>
-                         <div class="cell-muted">${p.e}</div>`;
+        const row=document.createElement('div'); row.className='row';
+        const short = p.u.replace('https://solscan.io/token/','');
+        row.innerHTML=`
+          <div><div class='font-semibold'>${p.t}</div><div class='cell-muted'>${p.n}</div></div>
+          <div class='truncate'><span class='cell-muted'>Solana</span>
+            <div><a class='truncate' href='${p.u}' target='_blank' rel='noopener'>${short}</a></div>
+          </div>`;
         el.appendChild(row);
       });
     }
-    function openProducts(){
-      renderProducts(products);
-      document.getElementById('productsModal').style.display='flex';
-      document.body.style.overflow='hidden';
+
+    /* Icons grid */
+    
+
+function renderLogoGrid(){
+  const grid = document.getElementById('logoGrid');
+  const items = products.slice(0,12).map(p => {
+    return `
+    <div class="text-center cursor-pointer select-none" data-ticker="${p.t}" onclick="openProducts();filterProducts('${p.t}')">
+      <div class="app-icon">
+        <img alt="${p.t}" class="app-img" src="assets/icons/${p.t}.svg" />
+      </div>
+      <div class="app-ticker">${p.t}</div>
+      <div class="app-name">${p.n.replace(' xStock','')}</div>
+    </div>`;
+  }).join('');
+  grid.innerHTML = items;
+
+  grid.querySelectorAll('img.app-img').forEach(img => {
+    const t = img.getAttribute('alt');
+    function makeFallback(){
+      const span = document.createElement('span');
+      span.innerHTML = `<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 84 84'>
+        <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+          <stop stop-color='#22d3ee'/><stop offset='1' stop-color='#34d399'/>
+        </linearGradient></defs>
+        <rect width='84' height='84' rx='20' ry='20' fill='url(#g)'/>
+        <text x='42' y='52' text-anchor='middle' font-family='Inter,Arial,sans-serif'
+              font-size='26' font-weight='800' fill='#041016'>${t}</text>
+      </svg>`;
+      return span.firstChild;
     }
-    function closeProducts(){
-      document.getElementById('productsModal').style.display='none';
-      document.body.style.overflow='';
+    img.addEventListener('error', () => {
+      img.replaceWith(makeFallback());
+    });
+    setTimeout(() => {
+      if (!img.complete || img.naturalWidth === 0) {
+        img.replaceWith(makeFallback());
+      }
+    }, 400);
+  });
+}
+" onclick="openProducts();filterProducts('${p.t}')">
+      <div class="app-icon">
+        <img alt="${p.t}" src="assets/icons/${p.t}.svg"
+             onerror="this.onerror=null; this.src=placeholderIcon('${p.t}','${p.n.replace(/'/g,"\'")}');"/>
+      </div>
+      <div class="app-ticker">${p.t}</div>
+      <div class="app-name">${p.n.replace(' xStock','')}</div>
+    </div>`).join('');
+}
+" onclick="openProducts();filterProducts('${p.t}')">
+          <div class="app-icon"><img alt="${p.t}" src="assets/icons/${p.t}.svg" onerror="this.style.opacity=.25"/></div>
+          <div class="app-ticker">${p.t}</div><div class="app-name">${p.n.replace(' xStock','')}</div>
+        </div>`).join('');
     }
-    function filterProducts(q){
-      q = (q||'').toLowerCase();
-      const f = products.filter(p=> p.t.toLowerCase().includes(q) || p.n.toLowerCase().includes(q));
-      renderProducts(f);
-    }
 
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    /* Forms */
 
-    // Entrance animation for gradient text
-    gsap.from('h1 .bg-clip-text', { duration: 1.2, ease: 'power3.out', yPercent: 20, opacity: 0 });
+/* Fallback icon generator — gradient badge with ticker letters */
+function placeholderIcon(t,n){
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'>
+    <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+      <stop stop-color='#22d3ee'/><stop offset='1' stop-color='#34d399'/>
+    </linearGradient></defs>
+    <rect width='84' height='84' rx='20' ry='20' fill='url(#g)'/>
+    <text x='42' y='52' text-anchor='middle' font-family='Inter,Arial,sans-serif'
+          font-size='26' font-weight='800' fill='#041016'>${t}</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
 
-    // ToTop visibility & action
-    (function(){
-      const toTop = document.getElementById('toTop');
-      if(!toTop) return;
-      window.addEventListener('scroll', ()=>{ toTop.style.opacity = window.scrollY>600 ? 1 : 0; });
-      toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
-    })();
-
-    // Lead form handler + visual states
-    (function(){
-      const form = document.getElementById('leadForm');
-      const status = document.getElementById('leadStatus');
-      const cta = document.getElementById('ctaStart');
-      if(!form || !cta) return;
-      const setLoading = on => cta.setAttribute('data-loading', on? '1':'0');
-      const setSuccess = () => { cta.setAttribute('data-success','1'); setTimeout(()=>cta.setAttribute('data-success','0'), 1400); };
-      form.addEventListener('submit', async (e) => {
+    document.addEventListener('submit', (e)=>{
+      if(e.target && (e.target.id==='leadForm' || e.target.id==='leadFormModal')){
         e.preventDefault();
-        const data = Object.fromEntries(new FormData(form));
-        status.textContent = 'Отправляем…';
-        setLoading(true);
-        try {
-          console.log('Lead submitted', data);
-          await new Promise(r=>setTimeout(r, 800)); // имитация запроса
-          setLoading(false); setSuccess();
-          status.textContent = 'Заявка отправлена! Мы свяжемся с тобой.';
-          form.reset();
-        } catch (err) {
-          setLoading(false);
-          status.textContent = 'Ошибка отправки. Попробуй снова или напиши в Telegram.';
-        }
-      });
-    })();
+        alert('Заявка отправлена. Мы свяжемся в Telegram/Email.');
+        e.target.reset();
+      }
+    });
+
+    /* Full products list (ticker, name, Solscan URL) — реальные адреса */
+    const products = [
+      {t:'ABTx', n:'Abbott xStock', u:'https://solscan.io/token/XsHtf5RpxsQ7jeJ9ivNewouZKJHbPxhPoEy6yYvULr7'},
+      {t:'ABBVx', n:'AbbVie xStock', u:'https://solscan.io/token/XswbinNKyPmzTa5CskMbCPvMW6G5CMnZXZEeQSSQoie'},
+      {t:'ACNx', n:'Accenture xStock', u:'https://solscan.io/token/Xs5UJzmCRQ8DWZjskExdSQDnbE6iLkRu2jjrRAB1JSU'},
+      {t:'GOOGLx', n:'Alphabet xStock', u:'https://solscan.io/token/XsCPL9dNWBMvFtTmwcCA5v3xWPSMEBCszbQdiLLq6aN'},
+      {t:'AMZNx', n:'Amazon xStock', u:'https://solscan.io/token/Xs3eBt7uRfJX8QUs4suhyU8p2M6DoUDrJyWBa8LLZsg'},
+      {t:'AMBRx', n:'Amber xStock', u:'https://solscan.io/token/XsaQTCgebC2KPbf27KUhdv5JFvHhQ4GDAPURwrEhAzb'},
+      {t:'AAPLx', n:'Apple xStock', u:'https://solscan.io/token/XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp'},
+      {t:'APPx', n:'AppLovin xStock', u:'https://solscan.io/token/XsPdAVBi8Zc1xvv53k4JcMrQaEDTgkGqKYeh7AYgPHV'},
+      {t:'AZNx', n:'AstraZeneca xStock', u:'https://solscan.io/token/Xs3ZFkPYT2BN7qBMqf1j1bfTeTm1rFzEFSsQ1z3wAKU'},
+      {t:'BACx', n:'Bank of America xStock', u:'https://solscan.io/token/XswsQk4duEQmCbGzfqUUWYmi7pV7xpJ9eEmLHXCaEQP'},
+      {t:'BRK.Bx', n:'Berkshire Hathaway xStock', u:'https://solscan.io/token/Xs6B6zawENwAbWVi7w92rjazLuAr5Az59qgWKcNb45x'},
+      {t:'AVGOx', n:'Broadcom xStock', u:'https://solscan.io/token/XsgSaSvNSqLTtFuyWPBhK9196Xb9Bbdyjj4fH3cPJGo'},
+      {t:'CVXx', n:'Chevron xStock', u:'https://solscan.io/token/XsNNMt7WTNA2sV3jrb1NNfNgapxRF5i4i6GcnTRRHts'},
+      {t:'CRCLx', n:'Circle xStock', u:'https://solscan.io/token/XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1'},
+      {t:'CSCOx', n:'Cisco xStock', u:'https://solscan.io/token/Xsr3pdLQyXvDJBFgpR5nexCEZwXvigb8wbPYp4YoNFf'},
+      {t:'KOx', n:'Coca-Cola xStock', u:'https://solscan.io/token/XsaBXg8dU5cPM6ehmVctMkVqoiRG2ZjMo1cyBJ3AykQ'},
+      {t:'COINx', n:'Coinbase xStock', u:'https://solscan.io/token/Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu'},
+      {t:'CMCSAx', n:'Comcast xStock', u:'https://solscan.io/token/XsvKCaNsxg2GN8jjUmq71qukMJr7Q1c5R2Mk9P8kcS8'},
+      {t:'CRWDx', n:'CrowdStrike xStock', u:'https://solscan.io/token/Xs7xXqkcK7K8urEqGg52SECi79dRp2cEKKuYjUePYDw'},
+      {t:'DHRx', n:'Danaher xStock', u:'https://solscan.io/token/Xseo8tgCZfkHxWS9xbFYeKFyMSbWEvZGFV1Gh53GtCV'},
+      {t:'DFDVx', n:'DFDV xStock', u:'https://solscan.io/token/Xs2yquAgsHByNzx68WJC55WHjHBvG9JsMB7CWjTLyPy'},
+      {t:'LLYx', n:'Eli Lilly xStock', u:'https://solscan.io/token/Xsnuv4omNoHozR6EEW5mXkw8Nrny5rB3jVfLqi6gKMH'},
+      {t:'XOMx', n:'Exxon Mobil xStock', u:'https://solscan.io/token/XsaHND8sHyfMfsWPj6kSdd5VwvCayZvjYgKmmcNL5qh'},
+      {t:'GMEx', n:'Gamestop xStock', u:'https://solscan.io/token/Xsf9mBktVB9BSU5kf4nHxPq5hCBJ2j2ui3ecFGxPRGc'},
+      {t:'GLDx', n:'Gold xStock', u:'https://solscan.io/token/Xsv9hRk1z5ystj9MhnA7Lq4vjSsLwzL2nxrwmwtD3re'},
+      {t:'GSx', n:'Goldman Sachs xStock', u:'https://solscan.io/token/XsgaUyp4jd1fNBCxgtTKkW64xnnhQcvgaxzsbAq5ZD1'},
+      {t:'HDx', n:'Home Depot xStock', u:'https://solscan.io/token/XszjVtyhowGjSC5odCqBpW1CtXXwXjYokymrk7fGKD3'},
+      {t:'HONx', n:'Honeywell xStock', u:'https://solscan.io/token/XsRbLZthfABAPAfumWNEJhPyiKDW6TvDVeAeW7oKqA2'},
+      {t:'INTCx', n:'Intel xStock', u:'https://solscan.io/token/XshPgPdXFRWB8tP1j82rebb2Q9rPgGX37RuqzohmArM'},
+      {t:'IBMx', n:'International Business Machines xStock', u:'https://solscan.io/token/XspwhyYPdWVM8XBHZnpS9hgyag9MKjLRyE3tVfmCbSr'},
+      {t:'JNJx', n:'Johnson & Johnson xStock', u:'https://solscan.io/token/XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn'},
+      {t:'JPMx', n:'JPMorgan Chase xStock', u:'https://solscan.io/token/XsMAqkcKsUewDrzVkait4e5u4y8REgtyS7jWgCpLV2C'},
+      {t:'LINx', n:'Linde xStock', u:'https://solscan.io/token/XsSr8anD1hkvNMu8XQiVcmiaTP7XGvYu7Q58LdmtE8Z'},
+      {t:'MRVLx', n:'Marvell xStock', u:'https://solscan.io/token/XsuxRGDzbLjnJ72v74b7p9VY6N66uYgTCyfwwRjVCJA'},
+      {t:'MAx', n:'Mastercard xStock', u:'https://solscan.io/token/XsApJFV9MAktqnAc6jqzsHVujxkGm9xcSUffaBoYLKC'},
+      {t:'MCDx', n:'McDonald\'s xStock', u:'https://solscan.io/token/XsqE9cRRpzxcGKDXj1BJ7Xmg4GRhZoyY1KpmGSxAWT2'},
+      {t:'MDTx', n:'Medtronic xStock', u:'https://solscan.io/token/XsDgw22qRLTv5Uwuzn6T63cW69exG41T6gwQhEK22u2'},
+      {t:'MRKx', n:'Merck xStock', u:'https://solscan.io/token/XsnQnU7AdbRZYe2akqqpibDdXjkieGFfSkbkjX1Sd1X'},
+      {t:'METAx', n:'Meta xStock', u:'https://solscan.io/token/Xsa62P5mvPszXL1krVUnU5ar38bBSVcWAB6fmPCo5Zu'},
+      {t:'MSFTx', n:'Microsoft xStock', u:'https://solscan.io/token/XspzcW1PRtgf6Wj92HCiZdjzKCyFekVD8P5Ueh3dRMX'},
+      {t:'MSTRx', n:'MicroStrategy xStock', u:'https://solscan.io/token/XsP7xzNPvEHS1m6qfanPUGjNmdnmsLKEoNAnHjdxxyZ'},
+      {t:'QQQx', n:'Nasdaq xStock', u:'https://solscan.io/token/Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ'},
+      {t:'NFLXx', n:'Netflix xStock', u:'https://solscan.io/token/XsEH7wWfJJu2ZT3UCFeVfALnVA6CP5ur7Ee11KmzVpL'},
+      {t:'NVOx', n:'Novo Nordisk xStock', u:'https://solscan.io/token/XsfAzPzYrYjd4Dpa9BU3cusBsvWfVB9gBcyGC87S57n'},
+      {t:'NVDAx', n:'NVIDIA xStock', u:'https://solscan.io/token/Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh'},
+      {t:'OPENx', n:'OPEN xStock', u:'https://solscan.io/token/XsGtpmjhmC8kyjVSWL4VicGu36ceq9u55PTgF8bhGv6'},
+      {t:'ORCLx', n:'Oracle xStock', u:'https://solscan.io/token/XsjFwUPiLofddX5cWFHW35GCbXcSu1BCUGfxoQAQjeL'},
+      {t:'PLTRx', n:'Palantir xStock', u:'https://solscan.io/token/XsoBhf2ufR8fTyNSjqfU71DYGaE6Z3SUGAidpzriAA4'},
+      {t:'PEPx', n:'PepsiCo xStock', u:'https://solscan.io/token/Xsv99frTRUeornyvCfvhnDesQDWuvns1M852Pez91vF'},
+      {t:'PFEx', n:'Pfizer xStock', u:'https://solscan.io/token/XsAtbqkAP1HJxy7hFDeq7ok6yM43DQ9mQ1Rh861X8rw'},
+      {t:'PMx', n:'Philip Morris xStock', u:'https://solscan.io/token/Xsba6tUnSjDae2VcopDB6FGGDaxRrewFCDa5hKn5vT3'},
+      {t:'PGx', n:'Procter & Gamble xStock', u:'https://solscan.io/token/XsYdjDjNUygZ7yGKfQaB6TxLh2gC6RRjzLtLAGJrhzV'},
+      {t:'HOODx', n:'Robinhood xStock', u:'https://solscan.io/token/XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg'},
+      {t:'CRMx', n:'Salesforce xStock', u:'https://solscan.io/token/XsczbcQ3zfcgAEt9qHQES8pxKAVG5rujPSHQEXi4kaN'},
+      {t:'SPYx', n:'SP500 xStock', u:'https://solscan.io/token/XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W'},
+      {t:'TBLLx', n:'TBLL xStock', u:'https://solscan.io/token/XsqBC5tcVQLYt8wqGCHRnAUUecbRYXoJCReD6w7QEKp'},
+      {t:'TSLAx', n:'Tesla xStock', u:'https://solscan.io/token/XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB'},
+      {t:'TMOx', n:'Thermo Fisher xStock', u:'https://solscan.io/token/Xs8drBWy3Sd5QY3aifG9kt9KFs2K3PGZmx7jWrsrk57'},
+      {t:'TQQQx', n:'TQQQ xStock', u:'https://solscan.io/token/XsjQP3iMAaQ3kQScQKthQpx9ALRbjKAjQtHg6TFomoc'},
+      {t:'UNHx', n:'UnitedHealth xStock', u:'https://solscan.io/token/XszvaiXGPwvk2nwb3o9C1CX4K6zH8sez11E6uyup6fe'},
+      {t:'VTIx', n:'Vanguard xStock', u:'https://solscan.io/token/XsssYEQjzxBCFgvYFFNuhJFBeHNdLWYeUSP8F45cDr9'},
+      {t:'Vx', n:'Visa xStock', u:'https://solscan.io/token/XsqgsbXwWogGJsNcVZ3TyVouy2MbTkfCFhCGGGcQZ2p'},
+      {t:'WMTx', n:'Walmart xStock', u:'https://solscan.io/token/Xs151QeqTCiuKtinzfRATnUESM2xTU6V9Wy8Vy538ci'}
+    ];
   </script>
 </body>
 </html>
