@@ -24,22 +24,16 @@
     .glow-card::after{content:"";position:absolute;inset:-12px;z-index:-1;border-radius:calc(1.25rem + 12px);background:radial-gradient(420px 180px at 50% 0%,rgba(34,211,238,.18),transparent 60%);filter:blur(14px)}
     .glow-card:hover{transform:translateY(-1px);box-shadow:0 16px 44px rgba(0,0,0,.54),0 0 0 1px rgba(106,230,255,.14),0 0 60px rgba(0,236,255,.2)}
 
-    /* Button glow + safe shine (жёстко клипуется внутри кнопки) */
-    .btn-primary::before,.btn-primary::after{content:none !important} /* reset старых правил, чтобы не было «полосы» */
-    .btn-primary{
-      position:relative; overflow:hidden; contain:paint;
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      color:#041016; font-weight:800; border-radius:.75rem;
-      box-shadow:0 10px 30px rgba(34,211,238,.25), inset 0 0 0 1px rgba(0,0,0,.05);
-    }
-    .btn-primary::after{
-      content:""; position:absolute; top:-25%; bottom:-25%; left:-45%; width:40%;
-      transform:skewX(-12deg);
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-      filter:blur(2px); transition:left .65s ease; pointer-events:none;
-    }
-    .btn-primary:hover::after{ left:145%; }
-    .btn-primary:hover{ box-shadow:0 16px 44px rgba(34,211,238,.35), inset 0 0 0 1px rgba(0,0,0,.06) }
+    /* === Buttons === */
+    .btn-primary{position:relative;overflow:hidden;contain:paint;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041016;font-weight:800;border-radius:.75rem;box-shadow:0 10px 30px rgba(34,211,238,.25), inset 0 0 0 1px rgba(0,0,0,.05);transition:transform .15s ease}
+    .btn-primary:hover{box-shadow:0 16px 44px rgba(34,211,238,.35), inset 0 0 0 1px rgba(0,0,0,.06)}
+    .btn-primary:active{transform:translateY(1px) scale(.995);box-shadow:inset 0 4px 18px rgba(0,0,0,.25),0 8px 26px rgba(34,211,238,.25)}
+    /* live gradient */
+    @keyframes gradShift{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+    .gradient-shift{background-image:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent));background-size:200% 100%;animation:gradShift 8s linear infinite}
+    /* ghost */
+    .btn-ghost{position:relative;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#e6fbff;border-radius:.75rem;transition:box-shadow .25s ease,border-color .25s ease,background .25s ease}
+    .btn-ghost:hover{border-color:rgba(106,230,255,.35);box-shadow:0 0 0 1px rgba(106,230,255,.18),0 12px 28px rgba(0,236,255,.12);background:rgba(255,255,255,.06)}
 
     /* Tilt */
     .tilt{will-change:transform;transform-style:preserve-3d}
@@ -52,49 +46,71 @@
 
     /* Background overlay (soften Vanta) */
     #vanta{opacity:1;filter:none;will-change:transform}
-    .bg-overlay{
-      background:
-        radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.55), transparent 60%),
-        radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.45), transparent 60%),
-        linear-gradient(180deg, rgba(5,8,15,.75), rgba(5,8,15,.95))
-    }
+    .bg-overlay{background:radial-gradient(800px 520px at 65% 15%, rgba(8,12,20,.55), transparent 60%),radial-gradient(900px 640px at 10% 60%, rgba(8,12,20,.45), transparent 60%),linear-gradient(180deg, rgba(5,8,15,.75), rgba(5,8,15,.95))}
     @media (max-width: 768px){#vanta{opacity:.5}}
     @media (prefers-reduced-motion: reduce){#vanta{opacity:.45;filter:saturate(.6) brightness(.8)}}
 
     /* Nav blur */
     .nav-blur{backdrop-filter: blur(10px); background: rgba(5,8,15,.45); border-bottom:1px solid rgba(255,255,255,.08)}
     section, header, footer{position:relative; z-index:10}
+
+    /* === Hero giant background text === */
+    /* moved to dedicated separator */
+.section-watermark{position:relative}
+.section-watermark::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, var(--bg) 0%, rgba(11,14,20,0) 22%, rgba(11,14,20,0) 78%, var(--bg) 100%)}
+.wm-text{display:flex;align-items:center;justify-content:center;font-size:clamp(6rem,20vw,18rem);font-weight:800;letter-spacing:-.04em;color:rgba(255,255,255,.035);text-transform:none;user-select:none;pointer-events:none}
+
+/* Logos & modal */
+.logo-grid{position:relative;z-index:10;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
+@media (max-width:1024px){.logo-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:640px){.logo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.app-icon{border-radius:20px;display:flex;align-items:center;justify-content:center;height:82px;box-shadow:0 10px 22px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+.app-icon:hover{transform:translateY(-2px);box-shadow:0 20px 38px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
+.app-icon svg{width:42px;height:42px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45))}
+.app-ticker{margin-top:8px;font-weight:800}
+.app-name{margin-top:2px;font-size:.85rem;color:#a8b3c0}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:60}
+.modal{width:min(960px,92vw);max-height:86vh;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.modal-body{display:grid;grid-template-rows:auto 1fr;gap:10px;padding:14px 16px}
+.list{overflow:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+.row{display:grid;grid-template-columns:2fr 2fr 2fr;gap:12px;padding:12px 14px;align-items:center;border-bottom:1px solid rgba(255,255,255,.06)}
+.row:hover{background:rgba(255,255,255,.04)}
+.row .cell-muted{color:#9aa5b1;font-size:.9rem}
+.search{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);padding:10px 12px;outline:none}
+.close-btn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);padding:8px 10px;border-radius:10px}
+
   </style>
 </head>
 <body class="bg-bg-dark text-white font-body">
 
   <!-- Background layers -->
-  <div id="vanta" class="fixed inset-0 -z-11"></div>
+  <div id="vanta" class="fixed inset-0 -z-10"></div>
   <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none opacity-80"></div>
   <script>
     window.addEventListener('load',()=>{ 
-      VANTA.NET({ 
-        el: '#vanta',
-        color: 0x18a4b9, backgroundColor: 0x05080f,
-        points: 6.0, maxDistance: 16.0, spacing: 22.0,
-        showDots: true, speed: 0.8,
-        minHeight: 150.0, minWidth: 150.0,
-        scale: 1.05, scaleMobile: 1.05
-      });
-
+      VANTA.NET({ el: '#vanta', color: 0x18a4b9, backgroundColor: 0x05080f, points: 6.0, maxDistance: 16.0, spacing: 22.0, showDots: true, speed: 0.8, minHeight: 150.0, minWidth: 150.0, scale: 1.05, scaleMobile: 1.05 });
       try{
         if(window.VanillaTilt){
-          // Все glow-карточки, КРОМЕ .no-tilt
-          VanillaTilt.init(document.querySelectorAll('.glow-card:not(.no-tilt)'), {
-            max: 6, speed: 500, glare: true, 'max-glare': .12,
-            perspective: 900, scale: 1.01, easing: 'cubic-bezier(.22,1,.36,1)'
-          });
-          // Лёгкий tilt только для основных кнопок
-          VanillaTilt.init(document.querySelectorAll('.btn-primary'), {
-            max: 3, speed: 400, glare: false, scale: 1.005
-          });
+          VanillaTilt.init(document.querySelectorAll('.glow-card:not(.no-tilt)'), { max: 6, speed: 500, glare: true, 'max-glare': .12, perspective: 900, scale: 1.01, easing: 'cubic-bezier(.22,1,.36,1)' });
+          VanillaTilt.init(document.querySelectorAll('.btn-primary'), { max: 3, speed: 400, glare: false, scale: 1.005 });
         }
       }catch(e){console.warn('Tilt init skipped', e)}
+
+      // Magnetic only for main CTAs (hero & mobile-bar). Form CTA — без магнита
+      document.addEventListener('pointermove', e=>{
+        document.querySelectorAll('.btn-magnetic').forEach(b=>{
+          const r=b.getBoundingClientRect();
+          const x=e.clientX-(r.left+r.width/2);
+          const y=e.clientY-(r.top+r.height/2);
+          const dist=Math.hypot(x,y);
+          const pull=Math.max(0,1-dist/260);
+          b.style.transform=`translate(${x*0.06*pull}px,${y*0.06*pull}px)`;
+        })
+      });
+      document.querySelectorAll('.btn-magnetic').forEach(b=>b.addEventListener('pointerleave',()=>b.style.transform=''));
     })
   </script>
 
@@ -124,18 +140,20 @@
   </header>
 
   <!-- Hero -->
-  <section class="py-20 md:py-28">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <section class="py-20 md:py-28 relative">
+    
+
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 items-center gap-10">
         <div>
           <div class="inline-flex items-center gap-2 border border-white/15 rounded-full px-3 py-1 text-xs text-gray-300 mb-4 bg-white/5">
             <span class="h-2 w-2 rounded-full bg-emerald-400"></span> Без брокеров • Только кошелёк и USDT
           </div>
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">Tokenized Wall Street <span class="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">for Everyone</span></h1>
-          <p class="mt-6 text-lg text-gray-300 max-w-xl">Купи токенизированные акции и ETF через крипту. Проводим за руку: P2P → кошелёк → готовый портфель ведущие мировые акции в режиме онлайн, подкрепленные базовой ценной бумагой в соотношении 1:1..</p>
+          <p class="mt-6 text-lg text-gray-300 max-w-xl">Покупайте токенизированные акции и ETF через крипту. Полное сопровождение: от покупки USDT до готового портфеля. Apple, Tesla, S&P 500. Токены обеспечены базовыми бумагами 1:1</p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#start" class="btn-primary rounded-xl px-6 py-3">Начать сейчас</a>
-            <a href="#how" class="rounded-xl px-6 py-3 border border-white/20 hover:border-white/40">Узнать больше</a>
+            <a href="#start" class="btn-primary gradient-shift btn-magnetic rounded-xl px-6 py-3">Начать сейчас</a>
+            <a href="#how" class="btn-ghost rounded-xl px-6 py-3">Узнать больше</a>
           </div>
           <div class="mt-6 flex items-center gap-4 text-sm text-gray-400">
             <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 bg-emerald-400 rounded-full"></span> Вход от $100</div>
@@ -168,12 +186,71 @@
                 <div class="mt-2 text-emerald-300">+1.58%</div>
               </div>
             </div>
-            <p class="mt-4 text-xs text-gray-400">*Данные пример не инвестиционный совет.</p>
+            <p class="mt-4 text-xs text-gray-400">*Данные — пример. Не инвестиционный совет.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+<!-- Section watermark -->
+<section class="section-watermark py-10 md:py-14">
+  <div class="wm-text">xStocks</div>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+    <h3 class="text-center text-2xl md:text-3xl font-extrabold mb-6">Топовые токенизированные активы</h3>
+    <div class="logo-grid">
+      <div class="text-center" onclick="openProducts('NFLXx')">
+        <div class="app-icon"><img src="assets/icons/NFLXx.svg" alt="NFLXx"/></div>
+        <div class="app-ticker">NFLXx</div><div class="app-name">Netflix</div>
+      </div>
+      <div class="text-center" onclick="openProducts('METAx')">
+        <div class="app-icon"><img src="assets/icons/METAx.svg" alt="METAx"/></div>
+        <div class="app-ticker">METAx</div><div class="app-name">Meta</div>
+      </div>
+      <div class="text-center" onclick="openProducts('HOODx')">
+        <div class="app-icon"><img src="assets/icons/HOODx.svg" alt="HOODx"/></div>
+        <div class="app-ticker">HOODx</div><div class="app-name">Robinhood</div>
+      </div>
+      <div class="text-center" onclick="openProducts('COINx')">
+        <div class="app-icon"><img src="assets/icons/COINx.svg" alt="COINx"/></div>
+        <div class="app-ticker">COINx</div><div class="app-name">Coinbase</div>
+      </div>
+      <div class="text-center" onclick="openProducts('AMZNx')">
+        <div class="app-icon"><img src="assets/icons/AMZNx.svg" alt="AMZNx"/></div>
+        <div class="app-ticker">AMZNx</div><div class="app-name">Amazon</div>
+      </div>
+      <div class="text-center" onclick="openProducts('NVDAx')">
+        <div class="app-icon"><img src="assets/icons/NVDAx.svg" alt="NVDax"/></div>
+        <div class="app-ticker">NVDax</div><div class="app-name">NVIDIA</div>
+      </div>
+      <div class="text-center" onclick="openProducts('AZNx')">
+        <div class="app-icon"><img src="assets/icons/AZNx.svg" alt="AZNx"/></div>
+        <div class="app-ticker">AZNx</div><div class="app-name">AstraZeneca</div>
+      </div>
+      <div class="text-center" onclick="openProducts('MCDx')">
+        <div class="app-icon"><img src="assets/icons/MCDx.svg" alt="MCDx"/></div>
+        <div class="app-ticker">MCDx</div><div class="app-name">McDonald's</div>
+      </div>
+      <div class="text-center" onclick="openProducts('AAPLx')">
+        <div class="app-icon"><img src="assets/icons/AAPLx.svg" alt="AAPLx"/></div>
+        <div class="app-ticker">AAPLx</div><div class="app-name">Apple</div>
+      </div>
+      <div class="text-center" onclick="openProducts('MRKx')">
+        <div class="app-icon"><img src="assets/icons/MRKx.svg" alt="MRKx"/></div>
+        <div class="app-ticker">MRKx</div><div class="app-name">Merck</div>
+      </div>
+      <div class="text-center" onclick="openProducts('TSLAx')">
+        <div class="app-icon"><img src="assets/icons/TSLAx.svg" alt="TSLAx"/></div>
+        <div class="app-ticker">TSLAx</div><div class="app-name">Tesla</div>
+      </div>
+      <div class="text-center" onclick="openProducts('MSFTx')">
+        <div class="app-icon"><img src="assets/icons/MSFTx.svg" alt="MSFTx"/></div>
+        <div class="app-ticker">MSFTx</div><div class="app-name">Microsoft</div>
+      </div>
+    </div>
+    <div class="text-center mt-6 text-sm text-gray-400">Нажми на любой логотип, чтобы посмотреть весь список активов</div>
+  </div>
+</section>
 
   <!-- How it works -->
   <section id="how" class="py-16 md:py-24">
@@ -215,8 +292,8 @@
           <ul class="mt-6 space-y-3 text-gray-200">
             <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 🍏 Apple (AAPL)</li>
             <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 🚗 Tesla (TSLA)</li>
-            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 📈 S&P 500 (SPY)</li>
-            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 💻 NVIDIA (NVIDIA )</li>
+            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 📈 S&P 500 (SPY)</li>
+            <li class="flex gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 💻 Nasdaq 100 (QQQ)</li>
           </ul>
           <p class="mt-6 text-sm text-gray-400">*Состав и веса портфеля могут отличаться в зависимости от доступности токенизированных активов.</p>
         </div>
@@ -238,7 +315,7 @@
   <section class="py-16 md:py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-extrabold">Наши услуги</h2>
+        <h2 class="text-3л md:text-4xl font-extrabold">Наши услуги</h2>
         <p class="mt-3 text-gray-400">Зарабатываем сервисной моделью: онбординг, сопровождение, транзакции.</p>
       </div>
       <div class="mt-10 grid md:grid-cols-4 gap-6">
@@ -288,7 +365,7 @@
             <li>Поддержка 30 дней</li>
             <li>Комиссия сервиса: 5%</li>
           </ul>
-          <a href="#start" class="mt-6 inline-block btn-primary rounded-xl px-4 py-2">Выбрать</a>
+          <a href="#start" class="mt-6 inline-block btn-primary gradient-shift rounded-xl px-4 py-2">Выбрать</a>
         </div>
         <div class="glow-card p-6">
           <div class="text-sm text-gray-400">Premium</div>
@@ -323,7 +400,7 @@
             <label class="block text-sm text-gray-400">Сумма старта (USD)</label>
             <input required name="amount" type="number" min="100" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400" placeholder="100" />
           </div>
-          <button class="btn-primary rounded-xl px-6 py-3 w-full md:w-auto" type="submit">Отправить заявку</button>
+          <button id="ctaStart" class="btn-primary rounded-xl px-6 py-3 w-full md:w-auto" type="submit" data-loading="0" data-success="0"><span class="btn-spinner"></span><span class="btn-check">✔</span><span class="btn-text">Отправить заявку</span></button>
           <p id="leadStatus" class="text-sm text-gray-400"></p>
         </form>
         <p class="mt-4 text-xs text-gray-400">Нажимая «Отправить заявку», ты соглашаешься с тем, что это не инвестиционный совет. Мы оказываем технические и сервисные услуги по онбордингу и сопровождению.</p>
@@ -371,31 +448,215 @@
     </div>
   </footer>
 
+  <!-- Products Modal -->
+  <div id="productsModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-head">
+        <strong>Токенизированные активы</strong>
+        <button class="close-btn" onclick="closeProducts()">Закрыть</button>
+      </div>
+      <div class="modal-body">
+        <!-- quick lead form on top -->
+        <form id="leadFormModal" class="grid md:grid-cols-3 gap-3">
+          <input name="name" class="search md:col-span-1" placeholder="Имя" required>
+          <input name="contact" class="search md:col-span-1" placeholder="Telegram или Email" required>
+          <button class="btn-primary rounded-xl px-4 py-2 md:col-span-1" type="submit">Оставить заявку</button>
+        </form>
+        <!-- search/filter -->
+        <input id="productSearch" class="search" placeholder="Поиск по тикеру или названию…" oninput="filterProducts(this.value)">
+        <div id="productList" class="list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile CTA bar + ToTop -->
+  <div class="fixed bottom-3 left-3 right-3 z-40 md:hidden">
+    <div class="glow-card p-2 backdrop-blur">
+      <a href="#start" class="btn-primary gradient-shift btn-magnetic w-full rounded-xl py-3 text-center">Начать с $100</a>
+    </div>
+  </div>
+  <button id="toTop" class="btn-ghost fixed bottom-20 right-4 md:right-6 px-3 py-2 rounded-xl opacity-0 transition-opacity">↑</button>
+
   <script>
+    // Modal + products data
+    const products = [
+{t:'AAPLx', n:'Apple xStock',     s:'XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp', e:'0x9d275685dc284c8eb1c79f6aba7a63dc75ec890a'},
+{t:'AMZNx', n:'Amazon xStock',    s:'Xs3eBt7uRfJX8QUs4suhyU8p2M6DoUDrJyWBa8LLZsg', e:'0x3557ba345b01efa20a1bddc61f573bfd87195081'},
+{t:'AZNx',  n:'AstraZeneca xStock',s:'Xs3ZFkPYT2BN7qBMqf1j1bfTeTm1rFzEFSsQ1z3wAKU', e:'0x5d642505fe1a28897eb3baba665f454755d8daa2'},
+{t:'COINx', n:'Coinbase xStock',  s:'Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu', e:'0x364f210f430ec2448fc68a49203040f6124096f0'},
+{t:'HOODx', n:'Robinhood xStock', s:'XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg', e:'0xe1385fdd5ffb10081cd52c56584f25efa9084015'},
+{t:'MCDx',  n:\"McDonald's xStock\", s:'XsqE9cRRpzxcGKDXj1BJ7Xmg4GRhZoyY1KpmGSxAWT2', e:'0x80a77a372c1e12accda84299492f404902e2da67'},
+{t:'METAx', n:'Meta xStock',      s:'Xsa62P5mvPszXL1krVUnU5ar38bBSVcWAB6fmPCo5Zu', e:'0x96702be57cd9777f835117a809c7124fe4ec989a'},
+{t:'MRKx',  n:'Merck xStock',     s:'XsnQnU7AdbRZYe2akqqpibDdXjkieGFfSkbkjX1Sd1X', e:'0x17d8186ed8f68059124190d147174d0f6697dc40'},
+{t:'MSFTx', n:'Microsoft xStock', s:'XspzcW1PRtgf6Wj92HCiZdjzKCyFekVD8P5Ueh3dRMX', e:'0x5621737f42dae558b81269fcb9e9e70c19aa6b35'},
+{t:'NFLXx', n:'Netflix xStock',   s:'XsEH7wWfJJu2ZT3UCFeVfALnVA6CP5ur7Ee11KmzVpL', e:'0xa6a65ac27e76cd53cb790473e4345c46e5ebf961'},
+{t:'NVDax', n:'NVIDIA xStock',    s:'Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh', e:'0xc845b2894dbddd03858fd2d643b4ef725fe0849d'},
+{t:'TSLAx', n:'Tesla xStock',     s:'XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB', e:'0x8ad3c73f833d3f9a523ab01476625f269aeb7cf0'},
+    ];
+<script>
+  // --- helpers ---
+  const $ = (q, root=document) => root.querySelector(q);
+  const $$ = (q, root=document) => [...root.querySelectorAll(q)];
+  const short = (addr) => addr ? addr.slice(0,6) + '…' + addr.slice(-4) : '';
+
+  function solscanURL(addr){ return 'https://solscan.io/token/' + addr; }
+  function etherscanURL(addr){ return 'https://etherscan.io/token/' + addr; }
+
+  // Рендер строки списка
+  function productRow(p){
+    const sol = p.s ? `
+      <div class="cell-muted">
+        <div class="flex items-center gap-2">
+          <a href="${solscanURL(p.s)}" target="_blank" rel="noopener" class="underline">${short(p.s)}</a>
+          <button class="copy px-2 py-1 text-xs border border-white/15 rounded" data-copy="${p.s}">копировать</button>
+        </div>
+      </div>` : `<div class="cell-muted">—</div>`;
+
+    const eth = p.e ? `
+      <div class="cell-muted">
+        <div class="flex items-center gap-2">
+          <a href="${etherscanURL(p.e)}" target="_blank" rel="noopener" class="underline">${short(p.e)}</a>
+          <button class="copy px-2 py-1 text-xs border border-white/15 rounded" data-copy="${p.e}">копировать</button>
+        </div>
+      </div>` : `<div class="cell-muted">—</div>`;
+
+    return `
+      <div class="row" data-ticker="${p.t}">
+        <div><div class="font-semibold">${p.t}</div><div class="text-gray-300 text-sm">${p.n||''}</div></div>
+        ${sol}
+        ${eth}
+      </div>`;
+  }
+
+  // Рендер списка с фильтром
+  function renderProducts(filter='', preselect){
+    const list = $('#productList');
+    const q = filter.trim().toLowerCase();
+    const rows = products
+      .filter(p => !q || p.t.toLowerCase().includes(q) || (p.n||'').toLowerCase().includes(q))
+      .map(productRow)
+      .join('');
+    list.innerHTML = rows || `<div class="p-4 text-center text-gray-400">Ничего не найдено</div>`;
+
+    // copy buttons
+    $$('.copy', list).forEach(btn=>{
+      btn.addEventListener('click', ()=> {
+        navigator.clipboard.writeText(btn.dataset.copy||'');
+        btn.textContent = 'скопировано';
+        setTimeout(()=>btn.textContent='копировать', 1200);
+      });
+    });
+
+    // проскроллить к выбранному
+    if(preselect){
+      const el = $(`.row[data-ticker="${preselect}"]`, list);
+      if(el){ el.scrollIntoView({block:'center'}); el.style.background='rgba(255,255,255,.06)'; setTimeout(()=>el.style.background='', 900); }
+    }
+  }
+
+  // Открыть / закрыть модалку
+  function openProducts(ticker){
+    const backdrop = $('#productsModal');
+    if(!backdrop) return;
+    renderProducts($('#productSearch')?.value || '', ticker);
+    backdrop.style.display = 'flex';
+    document.documentElement.style.overflow = 'hidden';
+  }
+  function closeProducts(){
+    const backdrop = $('#productsModal');
+    if(!backdrop) return;
+    backdrop.style.display = 'none';
+    document.documentElement.style.overflow = '';
+  }
+
+  // Экспортируем в window (чтобы вызывалось из onclick)
+  window.openProducts = openProducts;
+  window.closeProducts = closeProducts;
+  window.filterProducts = (val)=>renderProducts(val);
+
+  // Закрытие по клику вне окна и по Esc
+  document.addEventListener('click', (e)=>{
+    const m = $('#productsModal');
+    if(!m || m.style.display!=='flex') return;
+    const box = $('.modal', m);
+    if(!box.contains(e.target) && !e.target.closest('.app-icon')) closeProducts();
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='Escape') closeProducts();
+  });
+
+  // Инициализация списка при загрузке (чтобы поиск работал сразу)
+  document.addEventListener('DOMContentLoaded', ()=> {
+    if($('#productsModal')) renderProducts('');
+  });
+</script>
+
+    function renderProducts(list){
+      const el = document.getElementById('productList');
+      el.innerHTML = '';
+      list.forEach(p=>{
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `<div><strong>${p.t}</strong><div class="cell-muted">${p.n}</div></div>
+                         <div class="cell-muted">${p.s}</div>
+                         <div class="cell-muted">${p.e}</div>`;
+        el.appendChild(row);
+      });
+    }
+    function openProducts(){
+      renderProducts(products);
+      document.getElementById('productsModal').style.display='flex';
+      document.body.style.overflow='hidden';
+    }
+    function closeProducts(){
+      document.getElementById('productsModal').style.display='none';
+      document.body.style.overflow='';
+    }
+    function filterProducts(q){
+      q = (q||'').toLowerCase();
+      const f = products.filter(p=> p.t.toLowerCase().includes(q) || p.n.toLowerCase().includes(q));
+      renderProducts(f);
+    }
+
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Entrance animation for gradient text
-    gsap.from('h1 .bg-clip-text', { duration: 1.2, ease: 'power3.out', yPercent: 20, opacity: 0 })
+    gsap.from('h1 .bg-clip-text', { duration: 1.2, ease: 'power3.out', yPercent: 20, opacity: 0 });
 
-    // Lead form handler (demo)
-    const form = document.getElementById('leadForm');
-    const status = document.getElementById('leadStatus');
-    if(form){
+    // ToTop visibility & action
+    (function(){
+      const toTop = document.getElementById('toTop');
+      if(!toTop) return;
+      window.addEventListener('scroll', ()=>{ toTop.style.opacity = window.scrollY>600 ? 1 : 0; });
+      toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+    })();
+
+    // Lead form handler + visual states
+    (function(){
+      const form = document.getElementById('leadForm');
+      const status = document.getElementById('leadStatus');
+      const cta = document.getElementById('ctaStart');
+      if(!form || !cta) return;
+      const setLoading = on => cta.setAttribute('data-loading', on? '1':'0');
+      const setSuccess = () => { cta.setAttribute('data-success','1'); setTimeout(()=>cta.setAttribute('data-success','0'), 1400); };
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(form));
         status.textContent = 'Отправляем…';
+        setLoading(true);
         try {
           console.log('Lead submitted', data);
-          await new Promise(r=>setTimeout(r, 600));
+          await new Promise(r=>setTimeout(r, 800)); // имитация запроса
+          setLoading(false); setSuccess();
           status.textContent = 'Заявка отправлена! Мы свяжемся с тобой.';
           form.reset();
         } catch (err) {
+          setLoading(false);
           status.textContent = 'Ошибка отправки. Попробуй снова или напиши в Telegram.';
         }
       });
-    }
+    })();
   </script>
 </body>
 </html>
