@@ -73,10 +73,16 @@
 
     /* Logo grid */
     .logo-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
+	.logo-grid img {
+  transition: transform .2s ease;
+  cursor: pointer;
+}
+.logo-grid img:hover {
+  transform: scale(1.1);
+}
+
     @media (max-width:1024px){.logo-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
     @media (max-width:640px){.logo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-    .app-icon{border-radius:20px;display:flex;align-items:center;justify-content:center;height:82px;box-shadow:0 10px 22px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;background:rgba(255,255,255,.03)}
-    .app-icon:hover{transform:translateY(-2px);box-shadow:0 20px 38px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
     .app-icon img{width:42px;height:42px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.45))}
     .app-ticker{margin-top:8px;font-weight:800}
     .app-name{margin-top:2px;font-size:.85rem;color:#a8b3c0}
@@ -161,7 +167,7 @@
 
   <!-- WATERMARK + ICONS -->
   <section class="section-watermark py-16 md:py-24">
-    <div class="wm-text">XSTOCKS</div>
+    <div class="wm-text">xStocks</div>
     <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h3 class="text-center text-3xl font-extrabold mb-8">Топовые токенизированные активы</h3>
       <p class="text-center text-sm text-gray-400 mb-8">Нажми на любой логотип, чтобы посмотреть весь список активов</p>
