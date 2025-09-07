@@ -6,6 +6,14 @@
   <title>Tokenized Stocks & ETFs Hub — xStocks hub</title>
   <meta name="description" content="Купи токенизированные акции и ETF через крипту. Онбординг, портфель, сопровождение. Без брокеров — только кошелёк и USDT."/>
 
+  <!-- Open Graph / Twitter (заполните под продакшн) -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="xStocks hub — Tokenized Stocks & ETFs"/>
+  <meta property="og:description" content="Купи токенизированные акции и ETF через крипту. Онбординг, портфель, сопровождение."/>
+  <meta property="og:image" content="/og-image.png"/>
+  <meta property="og:url" content="https://example.com"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+
   <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,8 +109,8 @@
 </head>
 <body>
   <!-- Background -->
-  <div id="vanta" class="fixed inset-0 -z-10"></div>
-  <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none"></div>
+  <div id="vanta" class="fixed inset-0 -z-10" aria-hidden="true"></div>
+  <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none" aria-hidden="true"></div>
 
   <!-- NAV -->
   <header class="sticky top-0 z-50 nav-blur">
@@ -153,14 +161,35 @@
 
   <!-- WATERMARK + ICONS -->
   <section class="section-watermark py-16 md:py-24">
-    <div class="wm-text">xStocks</div>
+    <div class="wm-text">XSTOCKS</div>
     <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h3 class="text-center text-3xl font-extrabold">Топовые токенизированные активы</h3>
-<p class="text-center text-sm text-gray-400 mb-8">Нажми на любой логотип, чтобы посмотреть весь список активов</p>
+      <h3 class="text-center text-3xl font-extrabold mb-8">Топовые токенизированные активы</h3>
+      <p class="text-center text-sm text-gray-400 mb-8">Нажми на любой логотип, чтобы посмотреть весь список активов</p>
       <div id="logoGrid" class="logo-grid"></div>
-      <div class="flex justify-center mt-8"><button class="btn-primary" onclick="openProducts()">Все тикеры</button></div>
+      <div class="flex justify-center mt-8">
+        <button class="btn-primary" onclick="openProducts()">Все тикеры</button>
+      </div>
     </div>
   </section>
+
+  <!-- Modal: products -->
+  <div id="productsModal" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-head">
+        <strong>Токенизированные активы</strong>
+        <button class="close-btn" onclick="closeProducts()" aria-label="Закрыть модал">Закрыть</button>
+      </div>
+      <div class="modal-body">
+        <form id="leadFormModal" class="grid md:grid-cols-3 gap-3">
+          <input name="name" class="search" placeholder="Имя" required>
+          <input name="contact" class="search" placeholder="Telegram или Email" required>
+          <button class="btn-primary rounded-xl px-4 py-2" type="submit">Оставить заявку</button>
+        </form>
+        <input id="productSearch" class="search mt-3" placeholder="Поиск по тикеру или названию…" oninput="filterProducts(this.value)">
+        <div id="productList" class="list mt-3"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- HOW -->
   <section id="how" class="py-16 md:py-24">
@@ -324,32 +353,13 @@
   </section>
 
   <!-- SECTION WATERMARK -->
-  <div class="section-watermark">
+  <div class="section-watermark" aria-hidden="true">
     <div class="wm-text">xStocks</div>
-  </div>
-
-  <!-- MODAL -->
-  <div id="productsModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal">
-      <div class="modal-head">
-        <strong>Токенизированные активы</strong>
-        <button class="close-btn" onclick="closeProducts()">Закрыть</button>
-      </div>
-      <div class="modal-body">
-        <form id="leadFormModal" class="grid md:grid-cols-3 gap-3">
-          <input name="name" class="search" placeholder="Имя" required>
-          <input name="contact" class="search" placeholder="Telegram или Email" required>
-          <button class="btn-primary rounded-xl px-4 py-2" type="submit">Оставить заявку</button>
-        </form>
-        <input id="productSearch" class="search mt-3" placeholder="Поиск по тикеру или названию…" oninput="filterProducts(this.value)">
-        <div id="productList" class="list mt-3"></div>
-      </div>
-    </div>
   </div>
 
   <!-- FOOTER -->
   <footer class="py-8 border-t border-white/10 text-center">
-    <div class="text-xs text-gray-400">© 2025 xStocks hub</div>
+    <div class="text-xs text-gray-400">© <span id="year">2025</span> xStocks hub</div>
     <p class="mt-2 max-w-3xl mx-auto text-[12px] leading-relaxed text-gray-500">
       Дисклеймер: информация на этом сайте не является инвестиционной рекомендацией, предложением или призывом к совершению сделок. Мы оказываем исключительно техническое сопровождение: помощь с онбордингом, настройкой кошельков и доступом к платформам. Решения о покупке/продаже активов принимаются пользователем самостоятельно и под его ответственность. На рынке существуют ценовые, технологические и правовые риски; провайдеры токенизации и сторонние сервисы не контролируются нами. Мы не кастодиальный сервис и не храним ваши ключи. Пользователь несёт ответственность за соблюдение законов своей юрисдикции и налоговую отчётность.
     </p>
@@ -360,7 +370,7 @@
     window.addEventListener('load',()=>{
       VANTA.NET({ el:'#vanta', color:0x18a4b9, backgroundColor:0x05080f, points:6.0, maxDistance:16.0, spacing:22.0, showDots:true, speed:.8, scale:1.05, scaleMobile:1.05 });
       try{ VanillaTilt.init(document.querySelectorAll('.glow-card:not(.no-tilt)'),{max:6,speed:500,glare:true,'max-glare':.12,perspective:900,scale:1.01}); }catch(e){}
-      document.getElementById('year')?.textContent = new Date().getFullYear();
+      document.getElementById('year').textContent = new Date().getFullYear();
       renderLogoGrid();
       renderProducts(products);
     });
@@ -392,27 +402,22 @@
     }
 
     /* Icons grid */
-    
+    function renderLogoGrid(){
+      const grid = document.getElementById('logoGrid');
+      grid.innerHTML = products.slice(0, 12).map(p => `
+        <div class="text-center" data-ticker="${p.t}" onclick="openProducts();filterProducts('${p.t}')">
+          <div class="app-icon">
+            <img alt="${p.t}" src="assets/icons/${p.t}.svg" onerror="this.src=placeholderIcon('${p.t}','${p.n}');"/>
+          </div>
+          <div class="app-ticker">${p.t}</div>
+          <div class="app-name">${p.n.replace(' xStock', '')}</div>
+        </div>
+      `).join('');
+    }
 
-function renderLogoGrid(){
-  const grid = document.getElementById('logoGrid');
-  const items = products.slice(0,12).map(p => {
-    return `
-    <div class="text-center cursor-pointer select-none" data-ticker="${p.t}" onclick="openProducts();filterProducts('${p.t}')">
-      <div class="app-icon">
-        <img alt="${p.t}" class="app-img" src="assets/icons/${p.t}.svg" />
-      </div>
-      <div class="app-ticker">${p.t}</div>
-      <div class="app-name">${p.n.replace(' xStock','')}</div>
-    </div>`;
-  }).join('');
-  grid.innerHTML = items;
-
-  grid.querySelectorAll('img.app-img').forEach(img => {
-    const t = img.getAttribute('alt');
-    function makeFallback(){
-      const span = document.createElement('span');
-      span.innerHTML = `<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 84 84'>
+    /* Fallback icon generator — gradient badge with ticker letters */
+    function placeholderIcon(t,n){
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'>
         <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
           <stop stop-color='#22d3ee'/><stop offset='1' stop-color='#34d399'/>
         </linearGradient></defs>
@@ -420,48 +425,10 @@ function renderLogoGrid(){
         <text x='42' y='52' text-anchor='middle' font-family='Inter,Arial,sans-serif'
               font-size='26' font-weight='800' fill='#041016'>${t}</text>
       </svg>`;
-      return span.firstChild;
-    }
-    img.addEventListener('error', () => {
-      img.replaceWith(makeFallback());
-    });
-    setTimeout(() => {
-      if (!img.complete || img.naturalWidth === 0) {
-        img.replaceWith(makeFallback());
-      }
-    }, 400);
-  });
-}
-" onclick="openProducts();filterProducts('${p.t}')">
-      <div class="app-icon">
-        <img alt="${p.t}" src="assets/icons/${p.t}.svg"
-             onerror="this.onerror=null; this.src=placeholderIcon('${p.t}','${p.n.replace(/'/g,"\'")}');"/>
-      </div>
-      <div class="app-ticker">${p.t}</div>
-      <div class="app-name">${p.n.replace(' xStock','')}</div>
-    </div>`).join('');
-}
-" onclick="openProducts();filterProducts('${p.t}')">
-          <div class="app-icon"><img alt="${p.t}" src="assets/icons/${p.t}.svg" onerror="this.style.opacity=.25"/></div>
-          <div class="app-ticker">${p.t}</div><div class="app-name">${p.n.replace(' xStock','')}</div>
-        </div>`).join('');
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
     }
 
     /* Forms */
-
-/* Fallback icon generator — gradient badge with ticker letters */
-function placeholderIcon(t,n){
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'>
-    <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
-      <stop stop-color='#22d3ee'/><stop offset='1' stop-color='#34d399'/>
-    </linearGradient></defs>
-    <rect width='84' height='84' rx='20' ry='20' fill='url(#g)'/>
-    <text x='42' y='52' text-anchor='middle' font-family='Inter,Arial,sans-serif'
-          font-size='26' font-weight='800' fill='#041016'>${t}</text>
-  </svg>`;
-  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-}
-
     document.addEventListener('submit', (e)=>{
       if(e.target && (e.target.id==='leadForm' || e.target.id==='leadFormModal')){
         e.preventDefault();
