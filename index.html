@@ -129,21 +129,65 @@
 
     /* Modal */
     .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:60}
-    .modal{width:min(960px,92vw);max-height:86vh;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.5);display:flex;flex-direction:column}
+    .modal{
+  width:min(960px,92vw);
+  max-height:86vh;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(15,20,30,0.3);         /* ← темнее фон */
+  backdrop-filter:blur(25px);            /* ← сильнее размытие */
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  display:flex;
+  flex-direction:column
+}
     .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
     .modal-body{display:flex;flex-direction:column;gap:10px;padding:14px 16px;flex:1;min-height:0}
     .list{flex:1;overflow-y:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
     .row{display:grid;grid-template-columns:2fr 3fr;gap:12px;padding:12px 14px;align-items:center;border-bottom:1px solid rgba(255,255,255,.06)}
-    .row:hover{background:rgba(255,255,255,.04)}
+    .row{background:rgba(255,255,255,.02)}           /* ← лёгкий базовый фон */
+    .row:hover{background:rgba(255,255,255,.08)}    /* ← ярче при наведении */
     .row .cell-muted{color:#9aa5b1;font-size:.9rem}
     .search{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);padding:10px 12px;outline:none}
     .close-btn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);padding:8px 10px;border-radius:10px}
     .row a{color:var(--accent-2);text-decoration:none}
     .row a:hover{text-decoration:underline}
+	
+	/* Подсветка найденной строки */
+.row-highlight{
+  background: rgba(34,211,238,.08) !important;
+  box-shadow: inset 0 0 0 2px rgba(34,211,238,.45);
+  border-radius: 10px;
+}
+
+/* Кнопка копирования адреса */
+.copy-btn{
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color: #e5e7eb;
+}
+.copy-btn:hover{
+  border-color: rgba(106,230,255,.35);
+  box-shadow: 0 0 0 1px rgba(106,230,255,.18);
+}
+
 
     /* Pricing sheen */
     .plan{position:relative;overflow:hidden}
-    .plan.sheen::before{content:"";position:absolute;inset:-20%;transform:skewX(-18deg) translateX(-140%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);filter:blur(6px);animation:plan-sheen 5.6s ease-in-out infinite}
+    .plan.sheen::after{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  transform:skewX(-18deg) translateX(-140%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+  filter:blur(6px);
+  animation:plan-sheen 5.6s ease-in-out infinite;
+  pointer-events:none;
+  z-index:3; /* поверх рамки */
+}
     @keyframes plan-sheen{0%{transform:skewX(-18deg) translateX(-140%)}45%{transform:skewX(-18deg) translateX(180%)}100%{transform:skewX(-18deg) translateX(180%)}}
 
     /* FAQ toggle icons */
@@ -231,13 +275,12 @@
     <div class="mt-2 text-emerald-300">+1.58</div>
   </div>
 </div>
-		  <!-- Дисклеймер -->
+		
+<!-- Дисклеймер -->
   <p class="mt-4 text-[11px] text-gray-500 leading-snug">
     *Данные — пример. Не инвестиционный совет. Токенизированные активы могут не иметь прав на дивиденды/голосование.
   </p>
 </div>
-      </div>
-    </div>
   </section>
 
   <!-- WATERMARK + ICONS -->
@@ -303,7 +346,7 @@
           <a href="#start" class="btn-primary mt-6">Выбрать</a>
         </div>
         <!-- Pro (sheen) -->
-        <div class="glow-card card-glow plan p-6 flex flex-col items-start text-left">
+        <div class="glow-card card-glow plan sheen p-6 flex flex-col items-start text-left">
           <div class="text-2xl font-extrabold">Pro</div>
           <div class="text-4xl font-extrabold mt-2">$500</div>
           <ul class="mt-4 space-y-2 text-gray-300">
@@ -458,7 +501,29 @@
     });
 
     /* Modal controls */
-    function openProducts(){ document.getElementById('productsModal').style.display='flex'; }
+    function openProducts(ticker){
+  const modal = document.getElementById('productsModal');
+  modal.style.display = 'flex';
+
+  // если передан тикер — сразу фильтруем
+  const input = document.getElementById('productSearch');
+  if (ticker) {
+    input.value = ticker;
+    filterProducts(ticker);
+
+    // Подсветить первую найденную строку и прокрутить к ней
+    requestAnimationFrame(() => {
+      const first = document.querySelector('#productList .row');
+      if (first) {
+        first.classList.add('row-highlight');
+        first.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        setTimeout(() => first.classList.remove('row-highlight'), 1200);
+      }
+    });
+  } else {
+    filterProducts('');
+  }
+}
     function closeProducts(){ document.getElementById('productsModal').style.display='none'; }
 
     /* Search filter */
@@ -475,19 +540,32 @@
         const row=document.createElement('div'); row.className='row';
         const short = p.u.replace('https://solscan.io/token/','');
         row.innerHTML=`
-          <div><div class='font-semibold'>${p.t}</div><div class='cell-muted'>${p.n}</div></div>
-          <div class='truncate'><span class='cell-muted'>Solana</span>
-            <div><a class='truncate' href='${p.u}' target='_blank' rel='noopener'>${short}</a></div>
-          </div>`;
+  <div>
+    <div class='font-semibold'>${p.t}</div>
+    <div class='cell-muted'>${p.n}</div>
+  </div>
+  <div class='truncate'>
+    <span class='cell-muted'>Solana</span>
+    <div class='flex items-center gap-2'>
+      <a class='truncate' href='${p.u}' target='_blank' rel='noopener'>${short}</a>
+      <button class="copy-btn" onclick="copyAddr('${short}')">Копировать</button>
+    </div>
+  </div>`;
         el.appendChild(row);
       });
     }
-
+function copyAddr(addr){
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(addr).catch(()=>alert('Скопируйте вручную: ' + addr));
+  } else {
+    alert('Скопируйте вручную: ' + addr);
+  }
+}
 /* Icons grid */
 function renderLogoGrid(){
   const grid = document.getElementById('logoGrid');
   grid.innerHTML = products.slice(0, 12).map(p => `
-    <div class="text-center" data-ticker="${p.t}" onclick="openProducts();filterProducts('${p.t}')">
+    <div class="text-center" data-ticker="${p.t}" onclick="openProducts('${p.t}')">
       <img 
         alt="${p.t}" 
         src="assets/icons/${p.t}.svg" 
