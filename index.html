@@ -35,6 +35,33 @@
     .glow-card{position:relative;overflow:hidden;border-radius:1.25rem;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(106,230,255,.22);box-shadow:0 10px 28px rgba(0,0,0,.48)}
     .glow-card::after{content:"";position:absolute;inset:-12px;z-index:-1;border-radius:calc(1.25rem + 12px);background:radial-gradient(420px 180px at 50% 0%,rgba(34,211,238,.18),transparent 60%);filter:blur(14px)}
 
+/* Gradient glow border */
+.card-glow {
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  z-index: 0;
+}
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px; /* толщина рамки */
+  background: linear-gradient(90deg,#14F195,#9945FF,#00C2FF,#14F195);
+  background-size: 300% 300%;
+  animation: glow-move 6s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes glow-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
     .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041016;font-weight:800;border-radius:.75rem;padding:.75rem 1.5rem;box-shadow:0 10px 30px rgba(34,211,238,.25);transition:transform .15s ease}
     .btn-primary:active{transform:translateY(1px) scale(.995)}
     .btn-ghost{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#e6fbff;border-radius:.75rem;padding:.75rem 1.25rem}
@@ -118,7 +145,7 @@
 </head>
 <body>
   <!-- Background -->
-  <div id="vanta" class="fixed inset-0 -z-10" aria-hidden="true"></div>
+  <div id="vanta" class="fixed inset-0 -z-0" aria-hidden="true"></div>
   <div class="bg-overlay fixed inset-0 -z-5 pointer-events-none" aria-hidden="true"></div>
 
   <!-- NAV -->
@@ -131,7 +158,7 @@
         <a href="#pricing" class="hover:text-white">Тарифы</a>
         <a href="#faq" class="hover:text-white">FAQ</a>
       </nav>
-      <a href="#start"
+<a href="#start"
    class="relative px-5 py-2 rounded-lg font-semibold
           bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500
           text-gray-900 shadow-[0_4px_12px_rgba(255,215,0,0.45),0_6px_20px_rgba(0,0,0,0.35)]
@@ -223,11 +250,11 @@
   <!-- PRICING -->
   <section id="pricing" class="py-16 md:py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-4xl font-extrabold">Ваш портфель</h2>
+      <h2 class="text-4xl font-extrabold">ВАШа ПОРТФЕЛЬ</h2>
 <p class="mt-2 text-gray-300">Выбирайте готовый набор токенизированных активов и уровень сопровождения</p>
       <div class="grid md:grid-cols-3 gap-6 mt-10">
         <!-- Lite -->
-        <div class="glow-card plan p-6 flex flex-col items-start text-left">
+        <div class="glow-card card-glow plan p-6 flex flex-col items-start text-left">
           <div class="text-2xl font-extrabold">Lite</div>
           <div class="text-4xl font-extrabold mt-2">$100</div>
           <ul class="mt-4 space-y-2 text-gray-300">
@@ -238,7 +265,7 @@
           <a href="#start" class="btn-primary mt-6">Выбрать</a>
         </div>
         <!-- Pro (sheen) -->
-        <div class="glow-card plan sheen p-6 flex flex-col items-start text-left">
+        <div class="glow-card card-glow plan p-6 flex flex-col items-start text-left">
           <div class="text-2xl font-extrabold">Pro</div>
           <div class="text-4xl font-extrabold mt-2">$500</div>
           <ul class="mt-4 space-y-2 text-gray-300">
@@ -249,7 +276,7 @@
           <a href="#start" class="btn-primary mt-6">Выбрать</a>
         </div>
         <!-- Premium -->
-        <div class="glow-card plan p-6 flex flex-col items-start text-left">
+        <div class="glow-card card-glow plan p-6 flex flex-col items-start text-left">
           <div class="text-2xl font-extrabold">Premium</div>
           <div class="text-4xl font-extrabold mt-2">$1000+</div>
           <ul class="mt-4 space-y-2 text-gray-300">
@@ -452,7 +479,7 @@ function renderLogoGrid(){
     document.addEventListener('submit', (e)=>{
       if(e.target && (e.target.id==='leadForm' || e.target.id==='leadFormModal')){
         e.preventDefault();
-        alert('Заявка отправлена. Мы свяжемся в Telegram/Email.');
+        alert('Заявка отправлена. Мы свяжемся в Telegram/WhatsApp.');
         e.target.reset();
       }
     });
