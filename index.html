@@ -410,19 +410,22 @@
       });
     }
 
-    /* Icons grid */
-    function renderLogoGrid(){
-      const grid = document.getElementById('logoGrid');
-      grid.innerHTML = products.slice(0, 12).map(p => `
-        <div class="text-center" data-ticker="${p.t}" onclick="openProducts();filterProducts('${p.t}')">
-          <div class="app-icon">
-            <img alt="${p.t}" src="assets/icons/${p.t}.svg" onerror="this.src=placeholderIcon('${p.t}','${p.n}');"/>
-          </div>
-          <div class="app-ticker">${p.t}</div>
-          <div class="app-name">${p.n.replace(' xStock', '')}</div>
-        </div>
-      `).join('');
-    }
+/* Icons grid */
+function renderLogoGrid(){
+  const grid = document.getElementById('logoGrid');
+  grid.innerHTML = products.slice(0, 12).map(p => `
+    <div class="text-center" data-ticker="${p.t}" onclick="openProducts();filterProducts('${p.t}')">
+      <img 
+        alt="${p.t}" 
+        src="assets/icons/${p.t}.svg" 
+        onerror="this.src=placeholderIcon('${p.t}','${p.n}');" 
+        class="mx-auto w-[90px] h-[90px] rounded-2xl transition-transform duration-200 hover:scale-110 cursor-pointer"
+      />
+      <div class="mt-3 font-bold">${p.t}</div>
+      <div class="text-sm text-gray-400">${p.n.replace(' xStock', '')}</div>
+    </div>
+  `).join('');
+}
 
     /* Fallback icon generator — gradient badge with ticker letters */
     function placeholderIcon(t,n){
